@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  font-size: 10px;
+}
+
+*::-moz-focus-inner {
+  border: none;
+}
+*:focus {
+  outline: none;
+}
+
+canvas {
+  border: 1px solid gray;
+}
+
+header {
+  width: 100%;
+  height: 5rem;
+  background: #4d4d4d;
+  background: -moz-linear-gradient(top, #4d4d4d 0%, #333333 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4d4d), color-stop(100%,#333333));
+  background: -webkit-linear-gradient(top, #4d4d4d 0%,#333333 100%);
+  background: -o-linear-gradient(top, #4d4d4d 0%,#333333 100%);
+  background: -ms-linear-gradient(top, #4d4d4d 0%,#333333 100%);
+  background: linear-gradient(to bottom, #4d4d4d 0%,#333333 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d4d4d', endColorstr='#333333',GradientType=0 );
+
+  #menu {
+    width: 3rem;
+    height: 5rem;
+    position: relative;
+    lefT: -0.9rem;
+    background: url('imgs/menu.png') center center no-repeat, darken(#4d4d4d, 10%);
+    -moz-appearance: none;
+    border: none;
+  }
+}
+
+
