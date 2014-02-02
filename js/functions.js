@@ -6,11 +6,8 @@ function sizeAndPos() {
   var data = c.getImageData(0,0, $c.width(), $c.height());
   var w = $(window).width(),
       h = $(window).height();
-  $c.css({'margin-left': w * .05,
-    'margin-top': h * .05
-  })
-  $c.attr('width', w * .9);
-  $c.attr('height',h * .9 - 50);
+  $c.attr('width', w);
+  $c.attr('height',h - 50);
   c.clearRect(0,0, $c.width(), $c.height());
   c.putImageData(data, 0, 0);
 }
@@ -28,8 +25,10 @@ function threshold(x1, y1, x2, y2, threshold) {
   return false;
 }
 
-function line(x1, y1, x2, y2, opts) {
+function line(x1, y1, x2, y2, opts, overlay) {
   opts = opts || {};
+  var c = window.c;
+  if( overlay ) var c = window.o;
   c.beginPath();
   c.lineCap = opts.lineCap || settings.lineCap;
   c.lineJoin = opts.lineJoin || settings.lineJoin;
@@ -40,13 +39,47 @@ function line(x1, y1, x2, y2, opts) {
   c.stroke();
 }
 
+function erase(x1, y1, x2, y2, overlay) {
+  var c = window.c;
+  if( overlay ) var c = window.o;
+  c.clearRect(x1, y1, x2 - x1, y2 - y1);
+}
+
+function undo() {
+  var history = window.points.history;
+  if( history.last > 1 ) {
+    var step = history[history.last-1];
+    c.putImageData(step.data, 0, 0);
+    window.points = step.points.slice(0);
+    window.points.history = history;
+    window.points.history.last = history.last-1;
+  } else {
+    c.clearRect(0,0, $c.width(), $c.height());
+    window.points = [];
+    window.points.history = history;
+    window.points.history.last = 0;
+  }
+  
+}
+
+function redo() {
+  var history = window.points.history;
+  if( history.last < history.length-1 ) {
+    var step = history[history.last+1];
+    c.putImageData(step.data, 0, 0);
+    window.points = step.points.slice(0);
+    window.points.history = history;
+    window.points.history.last = history.last+1;
+  }
+}
+
 
 /*** END ***/
 
 function startPoint(x, y) {
 
-  // If not previous point exists, make the first one.
-  if( !points.length ) points.push({x: x, y: y, type: settings.type, start: {x: x, y: y}});
+  // If no previous point exists, make the first one.
+  if( !points.length ) points.push({x: x, y: y, type: '', start: {x: x, y: y}});
 
   var old = points[points.length-1],
       start = old.start,
@@ -56,10 +89,12 @@ function startPoint(x, y) {
         start : old.start || {x: x, y: y},
         type : settings.type
       }
-  // Just draws a circle
-  line(x,y,x,y);
+  if( old.type !== 'line' && current.type == 'line' ) {
+    line(x,y,x,y, {lineWidth: 5, strokeStyle: 'red'}, true);
+  }
 
   if( old.type == 'line' ) {
+    if( points[points.indexOf(old)-1].type !== 'line' ) erase(old.x-5, old.y-5, old.x+5, old.y+5, true);
     line(old.x, old.y, x, y);
   }
 
@@ -68,6 +103,10 @@ function startPoint(x, y) {
     points[points.length-1].type = '';
     points[points.length-1].start = undefined;
     return;
+  }
+
+  if(current.type == 'ribbon') {
+    settings.ribbonTimes = 1;
   }
 
   points.push(current);
@@ -101,7 +140,7 @@ function drawPoint(x,y) {
       points.push(current);
 
       for( var i = 0, len = points.length-1; i < len; i++ ) {
-        if( threshold(points[i].x, points[i].y, current.x, current.y, 40)) {
+        if(threshold(points[i].x, points[i].y, current.x, current.y, 40)) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
 
@@ -110,7 +149,26 @@ function drawPoint(x,y) {
       }
       break; 
     }
+    case 'fur': {
+      line(capture.x, capture.y, x, y);
+      var current = {
+        x : x,
+        y : y,
+        start : capture.start,
+        type : capture.type
+      }
+      points.push(current);
+
+      for( var i = 0, len = points.length-1; i < len; i++ ) {
+        if(threshold(points[i].x, points[i].y, current.x, current.y, 40)) {
+          var x = points[i].x - current.x,
+              y = points[i].y - current.y;
+          var l = settings.furLength || 0.2;
+          line(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
+        }
+      }
+      break;
+    }
   }
 }
-
 

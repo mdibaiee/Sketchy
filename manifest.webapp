@@ -1,0 +1,26 @@
+{
+  "name": "Sketchy",
+  "description": "Free Sketch/Paint app",
+  "version": 1,
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/images/logo16.png",
+    "32": "/images/logo32.png",
+    "48": "/images/logo48.png",
+    "60": "/images/logo60.png",
+    "64": "/images/logo64.png",
+    "90": "/images/logo90.png",
+    "120": "/images/logo120.png",
+    "128": "/images/logo128.png"
+  },
+  "developer": {
+    "name": "Mahdi Dibaiee",
+    "url": "https://twitter.com/mdibaiee"
+  },
+  "locales": {
+    "fa": {
+      "name": "Sketchy",
+      "description": "برنامه‌ی رایگان طراحی/نقاشی"
+    }
+  }
+}
