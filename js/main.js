@@ -16,17 +16,38 @@ $(document).ready(function() {
   sizeAndPos();
   $(window).resize(sizeAndPos);
 
-  $c.bind('mousedown touchstart', function(e) {
-    alert(e.pageX);
+  $c.bind('mousedown', function(e) {
+    e.preventDefault();
     var xy = relative(e.pageX, e.pageY);
     startPoint(xy.x, xy.y);
     window.active = true;
-  }).bind('mousemove touchmove', function(e) {
+  }).bind('mousemove', function(e) {
+    e.preventDefault();
     if (!window.active || settings.type == 'line') return;
     var xy = relative(e.pageX, e.pageY);
     drawPoint(xy.x, xy.y);
-  }).bind('mouseup touchend', function() {
+  }).bind('mouseup touchend', function(e) {
+    e.preventDefault();
     window.active = false;
+  }).bind('touchstart', function(e) {
+    e.preventDefault();
+
+    for( var i = 0, len = e.changedTouches.length; i < len; i++ ) {
+      var touch = e.changedTouches[i];
+      var xy = relative(touch.pageX, touch.pageY);
+      startPoint(xy.x, xy.y);
+    }
+    window.active = true;
+  }).bind('touchmove', function(e) {
+    e.preventDefault();
+    if(!window.active || settings.type =='line') return;
+
+    for( var i = 0, len = e.changedTouches.length; i < len; i++ ) {
+      var touch = e.changedTouches[i];
+      var xy = relative(touch.pageX, touch.pageY);
+      drawPoint(xy.x, xy.y);
+    }
+    window.active = true;
   })
   
 })
