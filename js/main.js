@@ -16,19 +16,19 @@ $(document).ready(function() {
   sizeAndPos();
   $(window).resize(sizeAndPos);
 
-  $c.mousedown(function(e) {
+  $c.on('mousedown touchstart', function(e) {
     
     var xy = relative(e.pageX, e.pageY);
     startPoint(xy.x, xy.y);
     window.active = true;
 
-  }).mousemove(function(e) {
+  }).on('mousemove touchmove', function(e) {
 
     if (!window.active || settings.type == 'line') return;
     var xy = relative(e.pageX, e.pageY);
     drawPoint(xy.x, xy.y);
 
-  }).mouseup(function() {
+  }).on('mouseup touchend', function() {
 
     window.active = false;
 
