@@ -31,22 +31,16 @@ $(document).ready(function() {
     window.active = false;
   }).bind('touchstart', function(e) {
     e.preventDefault();
-
-    for( var i = 0, len = e.changedTouches.length; i < len; i++ ) {
-      var touch = e.changedTouches[i];
-      var xy = relative(touch.pageX, touch.pageY);
-      startPoint(xy.x, xy.y);
-    }
+    var touch = e.changedTouches[0];
+    var xy = relative(touch.pageX, touch.pageY);
+    startPoint(xy.x, xy.y);
     window.active = true;
   }).bind('touchmove', function(e) {
     e.preventDefault();
     if(!window.active || settings.type =='line') return;
-
-    for( var i = 0, len = e.changedTouches.length; i < len; i++ ) {
-      var touch = e.changedTouches[i];
-      var xy = relative(touch.pageX, touch.pageY);
-      drawPoint(xy.x, xy.y);
-    }
+    var touch = e.changedTouches[0];
+    var xy = relative(touch.pageX, touch.pageY);
+    drawPoint(xy.x, xy.y);
     window.active = true;
   })
   
