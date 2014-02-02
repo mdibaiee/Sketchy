@@ -4,7 +4,7 @@ $(document).ready(function() {
   window.c  = $('canvas')[0].getContext('2d');
 
   window.settings = {
-    lineWidth : 5,
+    lineWidth : 1,
     strokeStyle : 'black',
     type: 'sketch',
     lineCap: 'round',
