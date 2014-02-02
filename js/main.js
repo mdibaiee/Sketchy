@@ -17,6 +17,7 @@ $(document).ready(function() {
   $(window).resize(sizeAndPos);
 
   $c.bind('mousedown touchstart', function(e) {
+    alert(e.pageX);
     var xy = relative(e.pageX, e.pageY);
     startPoint(xy.x, xy.y);
     window.active = true;
