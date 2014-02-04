@@ -7,7 +7,7 @@ function sizeAndPos() {
   var w = $(window).width(),
       h = $(window).height();
   $c.attr('width', w);
-  $c.attr('height',h - 50);
+  $c.attr('height',h - 53);
   c.clearRect(0,0, $c.width(), $c.height());
   c.putImageData(data, 0, 0);
 }
@@ -104,11 +104,6 @@ function startPoint(x, y) {
     points[points.length-1].start = undefined;
     return;
   }
-
-  if(current.type == 'ribbon') {
-    settings.ribbonTimes = 1;
-  }
-
   points.push(current);
 }
 
@@ -116,7 +111,7 @@ function drawPoint(x,y) {
   var capture = points[points.length-1];
 
   switch(capture.type) {
-    case 'draw': {
+    case 'pen': {
       line(capture.x, capture.y, x, y);
 
       var current = {
@@ -160,7 +155,7 @@ function drawPoint(x,y) {
       points.push(current);
 
       for( var i = 0, len = points.length-1; i < len; i++ ) {
-        if(threshold(points[i].x, points[i].y, current.x, current.y, 40)) {
+        if(threshold(points[i].x, points[i].y, current.x, current.y, settings.lineWidth*20)) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
           var l = settings.furLength || 0.2;

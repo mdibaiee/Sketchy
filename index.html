@@ -5,13 +5,21 @@
     <title></title>
     <meta charset='UTF-8'>
     <link rel='stylesheet/less' href='css/main.less'>
+    <link rel='stylesheet' href='css/switches.css'>
+    <link rel='stylesheet' href='css/value_selector.css'>
+    <link rel='stylesheet' href='css/seekbars.css'>
     <script src='js/less-1.5.0.min.js'></script>
+    <script src='js/libs/mobilebrowsers.js'></script>
   </head>
   
   <body>
   
     <header>
-      <button id='menu'></button>
+      <button class='menu'></button>
+      <span class='separator long left menu'></span>
+      <p id='title'>Sketchy</p>
+      <button class='save'></button>
+      <span class='separator small right'></span>
     </header>
 
     <div id='container'>
@@ -19,6 +27,69 @@
       <canvas></canvas>
     </div>
 
+    <div id='menu'>
+      <p class='icon-settings'>Settings</p>
+      <div class='options'>
+        <div class='general'>
+          <button id='settype'>Brush Type<span>Sketch</span></button>
+          <button id='setcolor'>Color<span>#000000</span></button>
+          <button id='setlineJoin'>Line Join<span>Round</span></button>
+          <button id='setlineCap'>Line Cap<span>Round</span></button>
+          <p id='lineWidth'>Line Width <span>2</span></p>
+           <div role="slider" aria-valuemin="0" aria-valuenow="80" aria-valuemax="100" aria-valuetext="slider description">
+              <div>
+                  <progress value="2" max="100"></progress>
+                <button>handler</button>
+              </div>
+            </div> 
+          </div>
+      </div>
+    </div>
+
+    <form role='dialog' data-type='value-selector' id='type' class='hidden'>
+      <section class='scrollable'>
+        <h1>Brush Type</h1>
+        <ol role='listbox'>
+          <li role='option' aria-selected='true'><label role='presentation'><span>Sketch</span></label></li>
+          <li role='option'><label role='presentation'><span>Fur</span></label></li>
+          <li role='option'><label role='presentation'><span>Pen</span></label></li>
+          <li role='option'><label role='presentation'><span>Line</span></label></li>
+        </ol>
+      </section>
+      <menu>
+        <button class='affirmative full'>Cancel</button>
+      </menu>
+    </form>
+
+    <form role='dialog' data-type='value-selector' id='lineJoin' class='hidden'>
+      <section class='scrollable'>
+        <h1>Line Join</h1>
+        <ol role='listbox'>
+          <li role='option' aria-selected='true'><label role='presentation'><span>Round</span></label></li>
+          <li role='option'><label role='presentation'><span>Bevel</span></label></li>
+          <li role='option'><label role='presentation'><span>Miter</span></label></li>
+        </ol>
+      </section>
+      <menu>
+        <button class='affirmative full'>Cancel</button>
+      </menu>
+    </form>
+
+    <form role='dialog' data-type='value-selector' id='lineCap' class='hidden'>
+      <section class='scrollable'>
+        <h1>Line Cap</h1>
+        <ol role='listbox'>
+          <li role='option' aria-selected='true'><label role='presentation'><span>Round</span></label></li>
+          <li role='option'><label role='presentation'><span>Square</span></label></li>
+          <li role='option'><label role='presentation'><span>Butt</span></label></li>
+        </ol>
+      </section>
+      <menu>
+        <button class='affirmative full'>Cancel</button>
+      </menu>
+    </form>
+
+    <script src='js/libs/yepnope.min.js'></script>
     <script src='js/libs/zepto.min.js'></script>
     <script src='js/functions.js'></script>
     <script src='js/main.js'></script>

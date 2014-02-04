@@ -1,6 +1,10 @@
+@import 'fonts';
+
+
 html, body {
   margin: 0;
   font-size: 10px;
+  overflow: hidden;
 }
 
 *::-moz-focus-inner {
@@ -10,37 +14,161 @@ html, body {
   outline: none;
 }
 
+.hidden {
+  display: none;
+  visibility: none;
+}
+
 div#container {
   position: absolute;
 }
 
 canvas {
-  border: 1px solid gray;
   position: absolute;
   top: 0;
   left: 0;
 }
 
+.separator {
+  display: block;
+  height: 4.8rem;
+  width: 0.1rem;
+  &.long {
+    background: url('imgs/div_line_lg_black.png');
+  }
+  &.small {
+    background: url('imgs/div_line_sm_black.png');
+  }
+  &.left {
+    float: left;
+  }
+  &.right {
+    float: right;
+  }
+  &.menu {
+    position: relative;
+    left: -3rem;
+  }
+}
+
+.overlay {
+  z-index: 9999;
+  position: absolute;
+  left: 0;
+  top: 5.3rem;;
+}
+
+button {
+  -moz-appearance: none;
+  z-index: 1;
+  position: relative;
+  border: none;
+}
+
+
+
+
 header {
   width: 100%;
-  height: 5rem;
-  background: #4d4d4d;
-  background: -moz-linear-gradient(top, #4d4d4d 0%, #333333 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4d4d), color-stop(100%,#333333));
-  background: -webkit-linear-gradient(top, #4d4d4d 0%,#333333 100%);
-  background: -o-linear-gradient(top, #4d4d4d 0%,#333333 100%);
-  background: -ms-linear-gradient(top, #4d4d4d 0%,#333333 100%);
-  background: linear-gradient(to bottom, #4d4d4d 0%,#333333 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d4d4d', endColorstr='#333333',GradientType=0 );
+  height: 5.3rem;
+  background: url('imgs/header_bg_black.png');
 
-  #menu {
-    width: 3rem;
+  button {
+    width: 5rem;
     height: 5rem;
+  }
+
+  .menu {
+    background: url('imgs/menu.png') -12px center no-repeat;
+    float: left;
+    &:active {
+      background: url('imgs/menu.png') -12px center no-repeat, url('imgs/bg_overlay_pressed_1.png') left no-repeat;
+    }
+  }
+
+  .save {
+    background: url('imgs/download.png') center center no-repeat;
+    float: right;
+    &:active {
+      background: url('imgs/download.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
+    }
+  }
+
+  #title {
+    color: white;
+    font-size: 11pt;
+    font-family: 'MozTT-Regular';
+    float: left;
+    margin: 1.5rem 0;
     position: relative;
-    lefT: -0.9rem;
-    background: url('imgs/menu.png') center center no-repeat, darken(#4d4d4d, 10%);
-    -moz-appearance: none;
-    border: none;
+    left: -2rem;
+  }
+}
+
+
+#menu {
+  height: 100%;
+  width: 15rem;
+  background: #262626;
+  display: block;
+  position: absolute;
+  left: -15rem;
+  top: 5rem;
+  color: white;
+  font-family: 'MozTT-Light';
+  font-size: 8pt;
+
+  &.pulled {
+    left: 0;
+  }
+
+  button[id^='set'], p {
+    background: none;
+    display: block;
+    width: 75%;
+    color: white;
+    text-align: left;
+    margin: 1rem 2.5rem;
+    font-family: 'MozTT-Light';
+    font-size: 8pt;
+    padding: 0 0.6rem;
+  }
+  span {
+    float: right;
+    font-size: 7pt;
+  }
+  div[role='slider'] {
+    width: 60%;
+    float: right;
+    margin: 0 2rem 0 0;
+  
+    div {
+      overflow: visible;
+      button {
+        margin-top: -3.4rem;
+        left: 0%;
+      }
+    }
+  }
+  .icon-settings {
+    display: block;
+    margin: 1rem 0.5rem;
+    
+    &:before {
+      content: '';
+      background: url('imgs/settings.png') center center no-repeat;
+      background-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      display: block;
+      float: left;
+      margin: -0.3rem 0.5rem 0 0;
+    }
+  }
+
+  .options {
+    display: block;
+    margin-top: 1rem;
   }
 }
 
