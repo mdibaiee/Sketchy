@@ -114,7 +114,7 @@ form[role="dialog"][data-type="value-selector"] [role="listbox"] li:active label
 }
 
 /* Checked status */
-form[role="dialog"][data-type="value-selector"] [role="listbox"] li[aria-selected="true"] span {
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li[aria-selected="true"]:not([data-input]) span {
   padding-right: 2.6rem;
   margin-right: 1.2rem;
   color: #00abcd;

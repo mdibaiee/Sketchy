@@ -6,16 +6,20 @@ function sizeAndPos() {
   var data = c.getImageData(0,0, $c.width(), $c.height());
   var w = $(window).width(),
       h = $(window).height();
-  $c.attr('width', w);
-  $c.attr('height',h - 53);
+  $c.attr('width', w * window.devicePixelRatio);
+  $c.attr('height',h * window.devicePixelRatio - 53 * window.devicePixelRatio);
+  $c.css({
+    'width' : w,
+    'height' : h - 53
+  });
   c.clearRect(0,0, $c.width(), $c.height());
   c.putImageData(data, 0, 0);
 }
 
 function relative(x,y) {
   return {
-    x : x - $c.offset().left,
-    y : y - $c.offset().top
+    x : x*window.devicePixelRatio,
+    y : y*window.devicePixelRatio - 53 * window.devicePixelRatio
   }
 }
 
@@ -32,11 +36,13 @@ function line(x1, y1, x2, y2, opts, overlay) {
   c.beginPath();
   c.lineCap = opts.lineCap || settings.lineCap;
   c.lineJoin = opts.lineJoin || settings.lineJoin;
-  c.strokeStyle = opts.strokeStyle || settings.strokeStyle;
-  c.lineWidth = opts.lineWidth || settings.lineWidth;
+  c.strokeStyle = opts.color || settings.color;
+  c.fillStyle = opts.color || settings.color;
+  c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
   c.moveTo(x1, y1);
   c.lineTo(x2, y2);
-  c.stroke();
+  if( !opts.noStroke ) c.stroke();
+  if( opts.fill ) c.fill();
 }
 
 function erase(x1, y1, x2, y2, overlay) {
@@ -73,6 +79,13 @@ function redo() {
   }
 }
 
+function dataToBlob(data) {
+  var binary = atob(data.split(',')[1]), array = [];
+  var type = data.split(',')[0].split(':')[1].split(';')[0];
+  for(var i = 0; i < binary.length; i++) array.push(binary.charCodeAt(i));
+  return new Blob([new Uint8Array(array)], {type: type});
+}
+
 
 /*** END ***/
 
@@ -90,7 +103,10 @@ function startPoint(x, y) {
         type : settings.type
       }
   if( old.type !== 'line' && current.type == 'line' ) {
-    line(x,y,x,y, {lineWidth: 5, strokeStyle: 'red'}, true);
+    window.o.beginPath();
+    window.o.fillStyle = 'red';
+    window.o.arc(x,y, 3, 0, 2*Math.PI);
+    window.o.fill();
   }
 
   if( old.type == 'line' ) {
@@ -135,11 +151,11 @@ function drawPoint(x,y) {
       points.push(current);
 
       for( var i = 0, len = points.length-1; i < len; i++ ) {
-        if(threshold(points[i].x, points[i].y, current.x, current.y, 40)) {
+        if(threshold(points[i].x, points[i].y, current.x, current.y, settings.connectTelorance)) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
 
-          line(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
+          line(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/20})
         }
       }
       break; 
@@ -155,10 +171,10 @@ function drawPoint(x,y) {
       points.push(current);
 
       for( var i = 0, len = points.length-1; i < len; i++ ) {
-        if(threshold(points[i].x, points[i].y, current.x, current.y, settings.lineWidth*20)) {
+        if(threshold(points[i].x, points[i].y, current.x, current.y, settings.connectTelorance)) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
-          var l = settings.furLength || 0.2;
+          var l = settings.furLength / 100 || 0.2;
           line(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
         }
       }

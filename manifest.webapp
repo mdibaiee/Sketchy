@@ -2,6 +2,8 @@
   "name": "Sketchy",
   "description": "Free Sketch/Paint app",
   "version": 1,
+  "fullscreen": true,
+  "type": "privileged",
   "launch_path": "/index.html",
   "icons": {
     "16": "/img/icons/icon16.png",
@@ -21,6 +23,12 @@
     "fa": {
       "name": "Sketchy",
       "description": "برنامه‌ی رایگان طراحی/نقاشی"
+    }
+  },
+  "permissions": {
+    "device-storage:pictures": {
+      "description": "Required to save sketched pics",
+      "access": "readwrite"
     }
   }
 }

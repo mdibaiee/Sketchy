@@ -8,6 +8,7 @@
     <link rel='stylesheet' href='css/switches.css'>
     <link rel='stylesheet' href='css/value_selector.css'>
     <link rel='stylesheet' href='css/seekbars.css'>
+    <link rel='stylesheet' href='css/color-picker.css'>
     <script src='js/less-1.5.0.min.js'></script>
     <script src='js/libs/mobilebrowsers.js'></script>
   </head>
@@ -36,24 +37,59 @@
           <button id='setlineJoin'>Line Join<span>Round</span></button>
           <button id='setlineCap'>Line Cap<span>Round</span></button>
           <p id='lineWidth'>Line Width <span>2</span></p>
-           <div role="slider" aria-valuemin="0" aria-valuenow="80" aria-valuemax="100" aria-valuetext="slider description">
+           <div role="slider" class='lineWidth'>
               <div>
-                  <progress value="2" max="100"></progress>
-                <button>handler</button>
+                <progress value="2" min="1" max="100"></progress>
+                <button style='left: 2%'>handler</button>
               </div>
             </div> 
           </div>
+          <br />
+          <hr>
+          <div class='sketch'>
+            <p class='icon-settings'>Sketch</p>
+            <p id='connectTelorance'>Connet Telorance<span>40</span></p>
+            <div role="slider" class='connectTelorance'>
+              <div>
+                <progress value="40" min="1" max="100"></progress>
+                <button style='left: 40%'>handler</button>
+              </div>
+            </div> 
+          </div>
+
+          <div class='fur hidden'>
+            <p class='icon-settings'>Fur</p>
+            <p id='connectTelorance'>Connet Telorance<span>40</span></p>
+            <div role="slider" class='connectTelorance'>
+              <div>
+                <progress value="40" min="10" max="100"></progress>
+                <button style='left: 40%'>handler</button>
+              </div>
+            </div>
+            <p id='furLength'>Fur Length<span>20</span></p>
+            <div role="slider" class='furLength'>
+              <div>
+                <progress value="20" min="1" max="100"></progress>
+                <button style='left: 20%'>handler</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class='bottom'>
+        <button id='clear' class='icon-clear'>Clear</button>
+        <button id='undo' class='icon-undo'>Undo</button>
+        <button id='redo' class='icon-redo'>Redo</button>
       </div>
     </div>
 
-    <form role='dialog' data-type='value-selector' id='type' class='hidden'>
+    <form role='dialog' data-type='value-selector' id='type' class='hidden single'>
       <section class='scrollable'>
         <h1>Brush Type</h1>
         <ol role='listbox'>
-          <li role='option' aria-selected='true'><label role='presentation'><span>Sketch</span></label></li>
-          <li role='option'><label role='presentation'><span>Fur</span></label></li>
-          <li role='option'><label role='presentation'><span>Pen</span></label></li>
-          <li role='option'><label role='presentation'><span>Line</span></label></li>
+          <li aria-selected='true'><label><span>Sketch</span></label></li>
+          <li><label><span>Fur</span></label></li>
+          <li><label><span>Pen</span></label></li>
+          <li><label><span>Line</span></label></li>
         </ol>
       </section>
       <menu>
@@ -61,13 +97,13 @@
       </menu>
     </form>
 
-    <form role='dialog' data-type='value-selector' id='lineJoin' class='hidden'>
+    <form role='dialog' data-type='value-selector' id='lineJoin' class='hidden single'>
       <section class='scrollable'>
         <h1>Line Join</h1>
         <ol role='listbox'>
-          <li role='option' aria-selected='true'><label role='presentation'><span>Round</span></label></li>
-          <li role='option'><label role='presentation'><span>Bevel</span></label></li>
-          <li role='option'><label role='presentation'><span>Miter</span></label></li>
+          <li aria-selected='true'><label><span>Round</span></label></li>
+          <li><label><span>Bevel</span></label></li>
+          <li><label><span>Miter</span></label></li>
         </ol>
       </section>
       <menu>
@@ -75,13 +111,13 @@
       </menu>
     </form>
 
-    <form role='dialog' data-type='value-selector' id='lineCap' class='hidden'>
+    <form role='dialog' data-type='value-selector' id='lineCap' class='hidden single'>
       <section class='scrollable'>
         <h1>Line Cap</h1>
         <ol role='listbox'>
-          <li role='option' aria-selected='true'><label role='presentation'><span>Round</span></label></li>
-          <li role='option'><label role='presentation'><span>Square</span></label></li>
-          <li role='option'><label role='presentation'><span>Butt</span></label></li>
+          <li aria-selected='true'><label><span>Round</span></label></li>
+          <li><label><span>Square</span></label></li>
+          <li><label><span>Butt</span></label></li>
         </ol>
       </section>
       <menu>
@@ -89,8 +125,45 @@
       </menu>
     </form>
 
+    <form role='dialog' data-type='value-selector' id='save' class='hidden confirm'>
+      <section class='scrollable'>
+        <h1>Save</h1>
+        <h1>Background</h1>
+        <ol role='listbox'>
+          <li aria-selected='true'><label><span>White</span></label></li>
+          <li><label><span>Current Color</span></label></li>
+          <li><label><span>Transparent</span></label></li>
+        </ol>
+        <h1>File Name</h1>
+        <ol role='listbox'>
+          <li aria-selected='true' data-input><label><span contenteditable>My Sketch</span></label></li>
+        </ol>
+        </section>
+      <menu>
+        <button class='affirmative' type='button'>Cancel</button>
+        <button class='affirmative' type='button'>Save</button>
+      </menu>
+    </form>
+
+
+    <!-- COLOR PICKER -->
+    <div class='picker overlay hidden'>
+      <div class='color-picker'>
+        <button id='closePicker'>×</button>
+        <input value='Hex' class='format' type='hidden' selected>
+        <input class='color' val='#000000'>
+        <div class="spectrum">
+				  <div>
+					  <div class="pin"></div>
+				  </div>
+			  </div>
+			  <input class="luminosity" type="range" min="0" max="100" />
+      </div>
+    </div>
+
     <script src='js/libs/yepnope.min.js'></script>
     <script src='js/libs/zepto.min.js'></script>
+    <script src='js/libs/touch.js'></script>
     <script src='js/functions.js'></script>
     <script src='js/main.js'></script>
 
