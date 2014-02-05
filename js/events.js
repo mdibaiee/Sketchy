@@ -9,7 +9,7 @@ function save() {
       }
       c.fillStyle = 'white';
       c.globalCompositeOperation = 'destination-over';
-      c.fillRect(0, 0, $c.width(), $c.height());
+      c.fillRect(0, 0, width(), height());
       c.fillStyle = cache.fillStyle;
       c.globalCompositeOperation = cache.composite;
       break;
@@ -21,7 +21,7 @@ function save() {
       }
       c.fillStyle = settings.strokeStyle;
       c.globalCompositeOperation = 'destination-over';
-      c.fillRect(0, 0, $c.width(), $c.height());
+      c.fillRect(0, 0, width(), height());
       c.fillStyle = cache.fillStyle;
       c.globalCompositeOperation = cache.composite;
       break;
@@ -59,7 +59,7 @@ function save() {
     }
 
     window.points.history.push({
-      data: c.getImageData(0, 0, $c.width(), $c.height()),
+      data: c.getImageData(0, 0, width(), height()),
       points: window.points.slice(0)
     })
     window.points.history.last = window.points.history.length-1;
@@ -168,13 +168,14 @@ function save() {
   // Bottom
 
   $('#clear').click(function() {
-    c.clearRect(0, 0, $c.width(), $c.height());
+    c.clearRect(0, 0, width(), height());
+    window.points = [];
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }
 
     window.points.history.push({
-      data: c.getImageData(0, 0, $c.width(), $c.height()),
+      data: c.getImageData(0, 0, width(), height()),
       points: []
     })
     window.points.history.last = window.points.history.length-1;

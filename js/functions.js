@@ -7,19 +7,19 @@ function sizeAndPos() {
   var w = $(window).width(),
       h = $(window).height();
   $c.attr('width', w * window.devicePixelRatio);
-  $c.attr('height',h * window.devicePixelRatio - 53 * window.devicePixelRatio);
+  $c.attr('height',(h - 53) * window.devicePixelRatio);
   $c.css({
     'width' : w,
     'height' : h - 53
   });
-  c.clearRect(0,0, $c.width(), $c.height());
+  c.clearRect(0,0, width(), height());
   c.putImageData(data, 0, 0);
 }
 
 function relative(x,y) {
   return {
     x : x*window.devicePixelRatio,
-    y : y*window.devicePixelRatio - 53 * window.devicePixelRatio
+    y : (y - 53) * window.devicePixelRatio
   }
 }
 
@@ -77,6 +77,14 @@ function redo() {
     window.points.history = history;
     window.points.history.last = history.last+1;
   }
+}
+
+function width() {
+  return $c.width() * window.devicePixelRatio;
+}
+
+function height() {
+  return ($c.height() - 53) * window.devicePixelRatio;
 }
 
 function dataToBlob(data) {
