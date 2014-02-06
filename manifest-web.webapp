@@ -7,14 +7,14 @@
   "launch_path": "/index.html",
   "default_locale": "en",
   "icons": {
-    "16": "/img/icons/icon16.png",
-    "32": "/img/icons/icon32.png",
-    "48": "/img/icons/icon48.png",
-    "60": "/img/icons/icon60.png",
-    "64": "/img/icons/icon64.png",
-    "90": "/img/icons/icon90.png",
-    "120": "/img/icons/icon120.png",
-    "128": "/img/icons/icon128.png"
+    "16": "http://mdibaiee.github.io/Sketchy/img/icons/icon16.png",
+    "32": "http://mdibaiee.github.io/Sketchy/img/icons/icon32.png",
+    "48": "http://mdibaiee.github.io/Sketchy/img/icons/icon48.png",
+    "60": "http://mdibaiee.github.io/Sketchy/img/icons/icon60.png",
+    "64": "http://mdibaiee.github.io/Sketchy/img/icons/icon64.png",
+    "90": "http://mdibaiee.github.io/Sketchy/img/icons/icon90.png",
+    "120": "http://mdibaiee.github.io/Sketchy/img/icons/icon120.png",
+    "128": "http://mdibaiee.github.io/Sketchy/img/icons/icon128.png"
   },
   "developer": {
     "name": "Mahdi Dibaiee",
