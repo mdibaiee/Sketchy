@@ -145,13 +145,14 @@ function save() {
   }).on('mousemove', function(e) {
     if( $(this).attr('data-moving') ) {
       var x = parseInt(e.pageX - sliderLeft - 15);
-      var progress = $(this).parent().children().first();
+      var $c = $('.'+$(this).parents('div[role="slider"]').attr('class'));
+      var progress = $c.find('progress');
       var max = +progress.attr('max');
       var min = +progress.attr('min');
       if( x <= max && x >= min ) {
-        $(this).css('left', x+'%');
-        $(this).parent().find('progress').attr('value', x);
-        var key = $(this).parents('div[role="slider"]').attr('class');
+        $c.find('button').css('left', x+'%');
+        progress.attr('value', x);
+        var key = $c.attr('class');
         settings[key] = x;
         $('#'+ key +' span').html(x);
       }

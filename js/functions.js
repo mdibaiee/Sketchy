@@ -34,6 +34,8 @@ function line(x1, y1, x2, y2, opts, overlay) {
   var c = window.c;
   if( overlay ) var c = window.o;
   c.beginPath();
+  if( settings.type == 'eraser' ) c.globalCompositeOperation = 'destination-out';
+  else c.globalCompositeOperation = opts.composite || settings.composite;
   c.lineCap = opts.lineCap || settings.lineCap;
   c.lineJoin = opts.lineJoin || settings.lineJoin;
   c.strokeStyle = opts.color || settings.color;
@@ -129,6 +131,9 @@ function drawPoint(x,y) {
   var capture = points[points.length-1];
 
   switch(capture.type) {
+    case 'eraser': {
+      capture.type = 'pen';
+    }
     case 'pen': {
       line(capture.x, capture.y, x, y);
 
@@ -180,20 +185,6 @@ function drawPoint(x,y) {
           line(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
         }
       }
-      break;
-    }
-    case 'eraser': {
-      c.globalCompositeOperation = 'destination-out';
-      line(capture.x, capture.y, x, y);
-
-      var current = {
-        x : x,
-        y : y,
-        start : capture.start,
-        type : capture.type
-      }
-
-      points.push(current);
       break;
     }
   }

@@ -11,7 +11,8 @@ $(document).ready(function() {
     lineCap: 'round',
     lineJoin: 'round',
     furLength: 5,
-    connectTelorance: 40
+    connectTelorance: 40,
+    composite: 'source-over'
   };
   window.points = [];
   window.$c = $('canvas');
