@@ -45,12 +45,6 @@ function line(x1, y1, x2, y2, opts, overlay) {
   if( opts.fill ) c.fill();
 }
 
-function erase(x1, y1, x2, y2, overlay) {
-  var c = window.c;
-  if( overlay ) var c = window.o;
-  c.clearRect(x1, y1, x2 - x1, y2 - y1);
-}
-
 function undo() {
   var history = window.points.history;
   if( history.last > 1 ) {
@@ -117,7 +111,7 @@ function startPoint(x, y) {
     window.o.fill();
   }
 
-  if( old.type == 'line' ) {
+  if( old.type == 'line' && current.type == 'line' ) {
     if( points[points.indexOf(old)-1].type !== 'line' ) erase(old.x-5, old.y-5, old.x+5, old.y+5, true);
     line(old.x, old.y, x, y);
   }
@@ -186,6 +180,20 @@ function drawPoint(x,y) {
           line(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
         }
       }
+      break;
+    }
+    case 'eraser': {
+      c.globalCompositeOperation = 'destination-out';
+      line(capture.x, capture.y, x, y);
+
+      var current = {
+        x : x,
+        y : y,
+        start : capture.start,
+        type : capture.type
+      }
+
+      points.push(current);
       break;
     }
   }

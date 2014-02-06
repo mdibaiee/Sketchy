@@ -32,13 +32,13 @@ function save() {
   var pics = navigator.getDeviceStorage('pictures');
   var r = pics.addNamed(file, save['file name'] + '.png');
   r.onsuccess = function() {
-    alert('Your sketch was successfuly saved to pictures/' + this.result.name); 
+    alert('Your sketch was successfuly saved to ' + this.result); 
   }
   r.onerror = function() {
     alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
     console.warn(this.error);
   }
-  c.putImageData(window.points.history[window.points.history.length-1].data, 0, 0);
+  c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
 }
 
   $('.menu').on('tap', function() {
@@ -60,6 +60,8 @@ function save() {
   }).on('touchend', function(e) {
     e.preventDefault();
     window.active = false;
+
+    if( settings.type == 'eraser' ) return;
 
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
@@ -111,7 +113,7 @@ function save() {
       if( i > 0 ) {
         var key = $(this).html().toLowerCase();
         var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
-        if( key !== 'file name' ) value = key.toLowerCase();
+        if( key !== 'file name' ) value = value.toLowerCase();
         
         window[v][key] = value;
       }

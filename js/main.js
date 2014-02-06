@@ -18,7 +18,7 @@ $(document).ready(function() {
   window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}];
 
   sizeAndPos();
-  $(window).resize(sizeAndPos);
+  //$(window).resize(sizeAndPos);
 
   $('.color-picker').change(function() {
     var c = $(this).find('.color').val();

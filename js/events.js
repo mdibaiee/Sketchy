@@ -53,7 +53,9 @@ function save() {
   }).on('mouseup', function(e) {
     e.preventDefault();
     window.active = false;
-
+  
+  
+    if( settings.type = 'eraser' ) return;
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }

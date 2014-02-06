@@ -25,6 +25,9 @@
       "description": "برنامه‌ی رایگان طراحی/نقاشی"
     }
   },
+  "orientation": [
+    "portrait"
+  ],
   "permissions": {
     "device-storage:pictures": {
       "description": "Required to save sketched pics",
