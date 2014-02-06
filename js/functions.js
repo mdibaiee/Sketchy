@@ -3,14 +3,14 @@
 
 function sizeAndPos() {
 
-  var data = c.getImageData(0,0, $c.width(), $c.height());
+  var data = window.points.history[window.points.history.last].data || c.getImageData(0,0, $c.width(), $c.height());
   var w = $(window).width(),
-      h = $(window).height();
+      h = $(window).height() - 53;
   $c.attr('width', w * window.devicePixelRatio);
-  $c.attr('height',(h - 53) * window.devicePixelRatio);
+  $c.attr('height',h * window.devicePixelRatio);
   $c.css({
     'width' : w,
-    'height' : h - 53
+    'height' : h
   });
   c.clearRect(0,0, width(), height());
   c.putImageData(data, 0, 0);
@@ -29,7 +29,7 @@ function threshold(x1, y1, x2, y2, threshold) {
   return false;
 }
 
-function line(x1, y1, x2, y2, opts, overlay) {
+function draw(x1, y1, x2, y2, opts, overlay) {
   opts = opts || {};
   var c = window.c;
   if( overlay ) var c = window.o;
@@ -114,11 +114,15 @@ function startPoint(x, y) {
   }
 
   if( old.type == 'line' && current.type == 'line' ) {
-    if( points[points.indexOf(old)-1].type !== 'line' ) erase(old.x-5, old.y-5, old.x+5, old.y+5, true);
-    line(old.x, old.y, x, y);
+    if( points[points.indexOf(old)-1].type !== 'line' ) {
+      o.clearRect(old.x-3, old.y-3, 6, 6, true);
+      draw(old.x, old.y, x, y);
+    } else
+      draw(old.x, old.y, x, y);
   }
 
-  if( points.length > 1 && ((start && threshold(start.x, start.y, x, y)) || threshold(old.x, old.y, x, y, 2)) ) {
+  var thresholds = window.mobile ? [10, 5] : [5, 2];
+  if( points.length > 1 && ((start && threshold(start.x, start.y, x, y, thresholds[0])) || threshold(old.x, old.y, x, y, thresholds[1])) ) {
     window.active = false;
     points[points.length-1].type = '';
     points[points.length-1].start = undefined;
@@ -135,7 +139,7 @@ function drawPoint(x,y) {
       capture.type = 'pen';
     }
     case 'pen': {
-      line(capture.x, capture.y, x, y);
+      draw(capture.x, capture.y, x, y);
 
       var current = {
         x : x,
@@ -148,7 +152,7 @@ function drawPoint(x,y) {
       break;
     }
     case 'sketch': {
-      line(capture.x, capture.y, x, y);
+      draw(capture.x, capture.y, x, y);
       var current = {
         x : x,
         y : y,
@@ -162,13 +166,13 @@ function drawPoint(x,y) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
 
-          line(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/20})
+          draw(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/20})
         }
       }
       break; 
     }
     case 'fur': {
-      line(capture.x, capture.y, x, y);
+      draw(capture.x, capture.y, x, y);
       var current = {
         x : x,
         y : y,
@@ -182,7 +186,7 @@ function drawPoint(x,y) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
           var l = settings.furLength / 100 || 0.2;
-          line(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
+          draw(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
         }
       }
       break;

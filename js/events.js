@@ -1,5 +1,7 @@
 "use strict";
 
+$(window).resize(sizeAndPos);
+
 function save() {
   switch(save.background) {
     case 'white': {
@@ -55,7 +57,7 @@ function save() {
     window.active = false;
   
   
-    if( settings.type = 'eraser' ) return;
+    if( settings.type == 'eraser' ) return;
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }

@@ -17,6 +17,7 @@
     longTapTimeout = null
     if (touch.last) {
       touch.el.trigger('longTap')
+      window.touchEl = touch.el;
       touch = {}
     }
   }
@@ -90,7 +91,7 @@
         if((_isPointerType = isPointerEventType(e, 'move')) &&
           !isPrimaryTouch(e)) return
         firstTouch = _isPointerType ? e : e.touches[0]
-        cancelLongTap()
+        if( $.moveCancel ) cancelLongTap()
         touch.x2 = firstTouch.pageX
         touch.y2 = firstTouch.pageY
 

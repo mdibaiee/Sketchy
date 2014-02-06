@@ -48,19 +48,15 @@ function save() {
     $('#save').removeClass('hidden');
   })
   $c.last().on('touchstart', function(e) {
-    e.preventDefault();
     var xy = relative(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     startPoint(xy.x, xy.y);
     window.active = true;
   }).on('touchmove', function(e) {
-    e.preventDefault();
     if (!window.active || settings.type == 'line') return;
     var xy = relative(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     drawPoint(xy.x, xy.y);
   }).on('touchend', function(e) {
-    e.preventDefault();
     window.active = false;
-
     if( settings.type == 'eraser' ) return;
 
     if(window.points.history.last < window.points.history.length-1) {
@@ -72,6 +68,12 @@ function save() {
       points: window.points.slice(0)
     })
     window.points.history.last = window.points.history.length-1;
+  }).on('longTap', function(e) {
+    if( points[points.length-1].type == 'line' ) {
+      window.active = false;
+      points[points.length-1].type = '';
+      points[points.length-1].start = undefined;
+    }
   })
   
   // Value Selector

@@ -17,6 +17,7 @@ $(document).ready(function() {
   window.points = [];
   window.$c = $('canvas');
   window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}];
+  window.points.history.last = 0;
 
   sizeAndPos();
   //$(window).resize(sizeAndPos);
@@ -30,7 +31,7 @@ $(document).ready(function() {
 
   yepnope({
     test: window.mobile,
-    yep : ['js/mobile-events.js', 'js/libs/color-picker-touch.js'],
+    yep : ['js/libs/touch.js', 'js/mobile-events.js', 'js/libs/color-picker-touch.js'],
     nope: ['js/events.js', 'js/libs/color-picker.js']
   })
 
