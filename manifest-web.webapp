@@ -3,7 +3,6 @@
   "description": "Free Sketch/Paint app",
   "version": "1",
   "fullscreen": "true",
-  "type": "privileged",
   "launch_path": "/index.html",
   "default_locale": "en",
   "icons": {
