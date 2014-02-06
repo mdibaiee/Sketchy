@@ -1,9 +1,10 @@
 {
-  "name": "Sketchy",
+  "name": "Sketchy Web",
   "description": "Free Sketch/Paint app",
   "version": "1",
   "fullscreen": "true",
   "default_locale": "en",
+  "launch_path": "http://mdibaiee.github.io/Sketchy/index.html",
   "icons": {
     "16": "http://mdibaiee.github.io/Sketchy/img/icons/icon16.png",
     "32": "http://mdibaiee.github.io/Sketchy/img/icons/icon32.png",
