@@ -1,7 +1,7 @@
 {
   "name": "Sketchy Web",
   "description": "Free Sketch/Paint app",
-  "version": "1",
+  "version": "1.1",
   "fullscreen": "true",
   "default_locale": "en",
   "launch_path": "/Sketchy/index.html",

@@ -30,7 +30,7 @@ function save() {
     }
   }
   var data = $c[0].toDataURL();
-  window.open(data, save['file name']);
+  window.open(data, save['file name']).focus();
 
   c.putImageData(window.points.history[window.points.history.length-1].data, 0, 0);
 
