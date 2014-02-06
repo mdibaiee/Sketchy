@@ -1,10 +1,10 @@
 {
   "name": "Sketchy",
   "description": "Free Sketch/Paint app",
-  "version": 1,
-  "fullscreen": true,
-  "type": "privileged",
+  "version": "1",
+  "fullscreen": "true",
   "launch_path": "/index.html",
+  "default_locale": "en",
   "icons": {
     "16": "/img/icons/icon16.png",
     "32": "/img/icons/icon32.png",
@@ -20,6 +20,10 @@
     "url": "https://twitter.com/mdibaiee"
   },
   "locales": {
+    "en": {
+      "name": "Sketchy",
+      "description": "Free Sketch/Paint app"
+    },
     "fa": {
       "name": "Sketchy",
       "description": "برنامه‌ی رایگان طراحی/نقاشی"
