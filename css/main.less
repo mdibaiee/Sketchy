@@ -128,7 +128,7 @@ header {
   height: 100%;
   width: 15rem;
   background: #262626;
-  display: block;
+  display: table;
   position: absolute;
   left: -15rem;
   top: 5rem;
@@ -136,6 +136,8 @@ header {
   font-family: 'MozTT-Light';
   font-size: 8pt;
   transition: left 0.2s ease-out;
+  border-collapse: collapse;
+  overflow: hidden;
 
   &.pulled {
     left: 0;
@@ -214,8 +216,8 @@ header {
     margin-top: 1rem;
   }
   .bottom {
-    position: absolute;
-    bottom: 5rem;
+    display: table-row;
+    vertical-align: bottom;
     button {
       margin-left: 3.5rem;
     }

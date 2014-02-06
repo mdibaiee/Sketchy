@@ -174,7 +174,9 @@ function save() {
 
   $('#clear').on('tap', function() {
     c.clearRect(0, 0, width(), height());
+    var h = window.points.history;
     window.points = [];
+    window.points.history = h;
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }

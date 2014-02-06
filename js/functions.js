@@ -60,7 +60,7 @@ function undo() {
     window.points.history = history;
     window.points.history.last = history.last-1;
   } else {
-    c.clearRect(0,0, $c.width(), $c.height());
+    c.clearRect(0,0, width(), height());
     window.points = [];
     window.points.history = history;
     window.points.history.last = 0;
@@ -80,11 +80,11 @@ function redo() {
 }
 
 function width() {
-  return $c.width() * window.devicePixelRatio;
+  return +$c.attr('width');
 }
 
 function height() {
-  return ($c.height() - 53) * window.devicePixelRatio;
+  return +$c.attr('height'); 
 }
 
 function dataToBlob(data) {
