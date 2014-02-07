@@ -165,8 +165,9 @@ function drawPoint(x,y) {
         if(threshold(points[i].x, points[i].y, current.x, current.y, settings.connectTelorance)) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
+          var w = settings.lineWidth/20 > 0.2 ? settings.lineWidth/20 : 0.2;
 
-          draw(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/20})
+          draw(points[i].x - x*0.2, points[i].y - y*0.2, current.x + x*0.2, current.y + y*0.2, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: w})
         }
       }
       break; 
@@ -186,7 +187,9 @@ function drawPoint(x,y) {
           var x = points[i].x - current.x,
               y = points[i].y - current.y;
           var l = settings.furLength / 100 || 0.2;
-          draw(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: settings.lineWidth/2})
+          var w = settings.lineWidth/20 > 0.2 ? settings.lineWidth/20 : 0.2;
+
+          draw(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: w})
         }
       }
       break;
