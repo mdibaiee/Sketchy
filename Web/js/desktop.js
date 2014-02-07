@@ -2,6 +2,8 @@
 
 $(window).resize(sizeAndPos);
 
+// Check for update
+
 function save() {
   switch(save.background) {
     case 'white': {
@@ -166,8 +168,8 @@ function save() {
 
   // Color Picker
   
-  $('#closePicker').click(function() {
-    $('.picker').addClass('hidden');
+  $('.close').click(function() {
+    $(this).parent().addClass('hidden');
   })
 
   // Bottom
@@ -188,4 +190,8 @@ function save() {
 
   $('#undo').click(undo);
   $('#redo').click(redo);
+
+  $('#about').click(function() {
+    $('.about').removeClass('hidden');
+  })
 

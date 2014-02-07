@@ -1,0 +1,266 @@
+@import 'fonts';
+
+
+html, body {
+  margin: 0;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+*::-moz-focus-inner {
+  border: none;
+}
+*:focus {
+  outline: none;
+}
+
+.hidden {
+  display: none;
+  visibility: none;
+}
+
+div#container {
+  position: absolute;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.separator {
+  display: block;
+  height: 4.8rem;
+  width: 0.1rem;
+  &.long {
+    background: url('imgs/div_line_lg_black.png');
+  }
+  &.small {
+    background: url('imgs/div_line_sm_black.png');
+  }
+  &.left {
+    float: left;
+  }
+  &.right {
+    float: right;
+  }
+  &.menu {
+    position: relative;
+    left: -3rem;
+  }
+}
+
+.overlay {
+  z-index: 9999;
+  position: absolute;
+  left: 0;
+  top: 5.3rem;;
+}
+
+button {
+  -moz-appearance: none;
+  z-index: 1;
+  position: relative;
+  border: none;
+}
+
+.close {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  padding: 0 0 0.2rem 0.2rem;
+  font-size: 10pt;
+  border: 1px solid rgb(227, 227, 227);
+  border-radius: 50%;
+  position: absolute;
+  text-align: center;
+  top: -2%;
+  left: 97%;
+}
+
+.picker, .about {
+  font-family: 'MozTT-Light';
+  width: 30rem;
+  height: 24.6rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -12.3rem;
+  margin-left: -15rem;
+  
+  .color-picker {
+    margin: 0;
+  }
+}
+
+.about {
+  background: #262626;
+  padding: 1rem 2rem;;
+  height: 23rem;
+  margin-top: -11.5rem;
+  margin-left: -17rem;
+  border-radius: 0.2rem;
+  color: white;
+  box-shadow: 0 0 0.3rem black;
+  
+  a, a:link, a:visited, a:active {
+    color: white;
+  }
+
+  .close {
+    background: #262626;
+    color: white;
+    border: 1px solid gray;
+  }
+
+  p {
+    font-size: 11pt;
+  }
+  span {
+    font-size: 8pt;
+  }
+}
+
+header {
+  width: 100%;
+  height: 5.3rem;
+  background: url('imgs/header_bg_black.png');
+
+  button {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .menu {
+    background: url('imgs/menu.png') -12px center no-repeat;
+    float: left;
+    &:active {
+      background: url('imgs/menu.png') -12px center no-repeat, url('imgs/bg_overlay_pressed_1.png') left no-repeat;
+    }
+  }
+
+  .save {
+    background: url('imgs/download.png') center center no-repeat;
+    float: right;
+    &:active {
+      background: url('imgs/download.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
+    }
+  }
+
+  #title {
+    color: white;
+    font-size: 11pt;
+    font-family: 'MozTT-Regular';
+    float: left;
+    margin: 1.5rem 0;
+    position: relative;
+    left: -2rem;
+  }
+}
+
+
+#menu {
+  height: 100%;
+  width: 15rem;
+  background: #262626;
+  position: absolute;
+  left: -15rem;
+  top: 5rem;
+  color: white;
+  font-family: 'MozTT-Light';
+  font-size: 8pt;
+  transition: left 0.2s ease-out;
+  border-collapse: collapse;
+  overflow: hidden;
+
+  &.pulled {
+    left: 0;
+    transition: left 0.2s ease-out;
+  }
+
+  button[id^='set'], p, .bottom button {
+    background: none;
+    display: block;
+    width: 75%;
+    color: white;
+    text-align: left;
+    margin: 1rem 2.5rem;
+    font-family: 'MozTT-Light';
+    font-size: 8pt;
+    padding: 0 0.6rem;
+    cursor: pointer;
+  }
+  span {
+    float: right;
+    font-size: 7pt;
+  }
+  div[role='slider'] {
+    width: 60%;
+    float: right;
+    margin: 0 2rem 0 0;
+  
+    div {
+      overflow: visible;
+      button {
+        margin-top: -3.4rem;
+        left: 0%;
+      }
+    }
+  }
+  hr {
+    clear: both;
+    padding: 0.7rem 0;
+    margin-bottom: 0.7rem;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+  }
+  *[class^='icon'] {
+    display: block;
+    margin: 1rem 0.5rem;
+    
+    &:nth-of-type(2) {
+      padding-top: 0.5rem;
+    }
+    &:before {
+      content: '';
+      background-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      display: block;
+      float: left;
+      margin: -0.3rem 0.5rem 0 0;
+    }
+  }
+
+  .icon-settings:before {
+    background-image: url('imgs/settings.png');
+  }
+  .icon-clear:before {
+    background-image: url('imgs/clear.png');
+  }
+  .icon-undo:before {
+    background-image: url('imgs/undo.png');
+  }
+  .icon-redo:before {
+    background-image: url('imgs/redo.png');
+  }
+
+  .options {
+    display: block;
+    margin-top: 1rem;
+  }
+  .bottom {
+    position: absolute;
+    bottom: 5rem;
+    width: 100%;
+    button[class^='icon'] {
+      margin-left: 3.5rem;
+    }
+    button {
+      margin-left: 5rem;
+    }
+  }
+}
+
+

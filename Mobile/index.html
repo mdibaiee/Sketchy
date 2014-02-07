@@ -79,6 +79,8 @@
         <button id='clear' class='icon-clear'>Clear</button>
         <button id='undo' class='icon-undo'>Undo</button>
         <button id='redo' class='icon-redo'>Redo</button>
+        <hr>
+        <button id='about'>About</button>
       </div>
     </div>
 
@@ -150,7 +152,6 @@
     <!-- COLOR PICKER -->
     <div class='picker overlay hidden'>
       <div class='color-picker'>
-        <button id='closePicker'>×</button>
         <input value='Hex' class='format' type='hidden' selected>
         <input class='color' val='#000000'>
         <div class="spectrum">
@@ -160,12 +161,30 @@
 			  </div>
 			  <input class="luminosity" type="range" min="0" max="100" />
       </div>
+      <button class='close'>x</button>
     </div>
 
-    <script src='js/libs/yepnope.min.js'></script>
+    <div class='about overlay hidden'>
+      <p>Sketchy</p>
+        <span>Sketchy is a free sketch / paint application for Firefox OS.</span>
+      <p>Developer</p>
+        <span>Sketchy was found by Mahdi Dibaiee. More info: <a href='http://about.me/mdibaiee'>About.me</a>
+          <br><br>
+          Contact: <br>
+          <a href='https://twitter.com/mdibaiee'>Twitter</a><br />
+          <a href='mailto:mdibaiee@aol.com'>Email</a>
+          <br><br>
+          <a href='http://mdibaiee.github.io/Sketchy/changelog'>Changelog</a>
+        </span>
+        <button class='close'>x</button>
+    </div>
+
     <script src='js/libs/zepto.min.js'></script>
+    <script src='js/libs/touch.js'></script>
+    <script src='js/libs/color-picker-touch.js'></script>
     <script src='js/functions.js'></script>
     <script src='js/main.js'></script>
+    <script src='js/mobile.js'></script>
 
   </body>
   

@@ -31,8 +31,8 @@ $(document).ready(function() {
 
   yepnope({
     test: window.mobile,
-    yep : ['js/libs/touch.js', 'js/mobile-events.js', 'js/libs/color-picker-touch.js'],
-    nope: ['js/events.js', 'js/libs/color-picker.js']
+    yep : ['js/libs/touch.js', 'js/mobile.js', 'js/libs/color-picker-touch.js'],
+    nope: ['js/desktop.js', 'js/libs/color-picker.js']
   })
 
 })

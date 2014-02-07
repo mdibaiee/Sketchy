@@ -1,5 +1,25 @@
 "use strict";
 
+$(document).ready(function() {
+
+// Open External Links in browser
+
+$('*').click(function(e) {
+  e.preventDefault();
+})
+
+$('a[href^="http"]').on('tap', function(e) {
+  e.preventDefault();
+  var href = $(this).attr('href');
+  var view = new MozActivity({
+    name: 'view',
+    data: {
+      type: 'url',
+      url: href
+    }
+  })
+})
+
 function save() {
   switch(save.background) {
     case 'white': {
@@ -41,10 +61,10 @@ function save() {
   c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
 }
 
-  $('.menu').on('tap', function() {
+  $('.menu').tap(function() {
     $('#menu').toggleClass('pulled');
   })
-  $('.save').on('tap', function() {
+  $('.save').tap(function() {
     $('#save').removeClass('hidden');
   })
   $c.last().on('touchstart', function(e) {
@@ -80,7 +100,7 @@ function save() {
   
   var $single = $('form[data-type="value-selector"].single');
 
-  $single.find('li').on('tap', function(e) {
+  $single.find('li').tap(function(e) {
     e.preventDefault();
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
     $(this).attr('aria-selected', 'true');
@@ -95,20 +115,20 @@ function save() {
     $(this).parents('form').addClass('hidden');
   })
 
-  $single.submit(function(e) {
+  $single.find('button').tap(function(e) {
     e.preventDefault();
-    $(this).addClass('hidden');
+    $(this).parents('form').addClass('hidden');
   })
 
   // Confirm
 
   var $confirm = $('form[data-type="value-selector"].confirm');
 
-  $confirm.find('li').on('tap', function(e) {
+  $confirm.find('li').tap(function(e) {
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
     $(this).attr('aria-selected', 'true');
   })
-  $confirm.find('button').last().on('tap', function(e) {
+  $confirm.find('button').last().tap(function(e) {
     e.preventDefault();
     var v = $(this).parents('form').attr('id');
     $(this).parents('form').find('h1').each(function(i) {
@@ -123,7 +143,7 @@ function save() {
     $(this).parents('form').addClass('hidden');
     window[v]();
   })
-  $confirm.find('button').first().on('tap', function(e) {
+  $confirm.find('button').first().tap(function(e) {
     e.preventDefault();
     $(this).parents('form').addClass('hidden');
   })
@@ -134,11 +154,11 @@ function save() {
   $btn.each(function() {
     var target = /set(.*)/.exec($(this).attr('id'))[1];
     if( target == 'color' ) {
-      return $(this).on('tap', function() {
+      return $(this).tap(function() {
         $('.picker').removeClass('hidden');
       })
     }
-    $(this).on('tap', function(e) {
+    $(this).tap(function(e) {
       e.preventDefault();
       $('form[id="' + target + '"]').removeClass('hidden');
     })
@@ -171,13 +191,13 @@ function save() {
 
   // Color Picker
   
-  $('#closePicker').on('tap', function() {
-    $('.picker').addClass('hidden');
+  $('.close').tap(function() {
+    $(this).parent().addClass('hidden');
   })
 
   // Bottom
 
-  $('#clear').on('tap', function() {
+  $('#clear').tap(function() {
     c.clearRect(0, 0, width(), height());
     var h = window.points.history;
     window.points = [];
@@ -193,6 +213,11 @@ function save() {
     window.points.history.last = window.points.history.length-1;
   })
 
-  $('#undo').on('tap', undo);
-  $('#redo').on('tap', redo);
+  $('#undo').tap(undo);
+  $('#redo').tap(redo);
 
+  $('#about').tap(function() {
+    $('.about').removeClass('hidden');
+  })
+
+});

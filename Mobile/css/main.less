@@ -65,26 +65,62 @@ button {
   border: none;
 }
 
-.picker {
+.close {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  padding: 0 0 0.2rem 0.2rem;
+  font-size: 10pt;
+  border: 1px solid rgb(227, 227, 227);
+  border-radius: 50%;
+  position: absolute;
+  text-align: center;
+  top: -2%;
+  left: 97%;
+}
+
+.picker, .about {
+  font-family: 'MozTT-Light';
   width: 30rem;
-  height: 30rem;
+  height: 24.6rem;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -15rem;
+  margin-top: -12.3rem;
   margin-left: -15rem;
-
-  #closePicker {
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid rgb(227, 227, 227);
-    border-radius: 50%;
-    position: absolute;
-    top: 1rem;
-    left: 27rem;
+  
+  .color-picker {
+    margin: 0;
   }
 }
 
+.about {
+  background: #262626;
+  padding: 1rem 2rem;;
+  height: 23rem;
+  margin-top: -11.5rem;
+  margin-left: -17rem;
+  border-radius: 0.2rem;
+  color: white;
+  box-shadow: 0 0 0.3rem black;
+  
+  a, a:link, a:visited, a:active {
+    color: white;
+  }
+
+  .close {
+    background: #262626;
+    color: white;
+    border: 1px solid gray;
+  }
+
+  p {
+    font-size: 11pt;
+  }
+  span {
+    font-size: 8pt;
+  }
+}
 
 header {
   width: 100%;
@@ -217,8 +253,12 @@ header {
   .bottom {
     position: absolute;
     bottom: 5rem;
-    button {
+    width: 100%;
+    button[class^='icon'] {
       margin-left: 3.5rem;
+    }
+    button {
+      margin-left: 5rem;
     }
   }
 }
