@@ -16,7 +16,7 @@ function save() {
       break;
     }
     case 'current color': {
-      c.fillStyle = settings.strokeStyle;
+      c.fillStyle = settings.color;
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
       c.fillStyle = settings.color;
