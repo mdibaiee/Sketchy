@@ -15,3 +15,12 @@ New features are coming soon! Contact and tell us what feature you would like to
 Found a bug? Make and issue and I'll fix it as soon as possible.
 
 Web version: https://mdibaiee.github.io/Sketchy/Web/
+Firefox Marketplace: https://marketplace.firefox.com/app/sketchy/
+
+Changelog
+=========
+
+**1.1**
+* Added "About"
+* No load-time for Mobile
+* Added preloader for images
