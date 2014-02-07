@@ -20,7 +20,7 @@ $('a[href^="http"]').on('tap', function(e) {
   })
 })
 
-function save() {
+window.save = function() {
   switch(save.background) {
     case 'white': {
       var cache = {
