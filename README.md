@@ -24,3 +24,10 @@ Changelog
 * Added "About"
 * No load-time for Mobile
 * Added preloader for images
+
+
+License
+=======
+
+GPL v2
+Copyright (C) 2014 Mahdi Dibaiee

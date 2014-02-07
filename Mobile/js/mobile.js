@@ -56,7 +56,6 @@ window.save = function() {
   }
   r.onerror = function() {
     alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
-    console.warn(this.error);
   }
   c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
 }
