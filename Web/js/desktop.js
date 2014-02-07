@@ -5,36 +5,29 @@ $(window).resize(sizeAndPos);
 // Check for update
 
 function save() {
+  var cData = c.getImageData(0, 0, width(), height());
   switch(save.background) {
     case 'white': {
-      var cache = {
-        color: c.color,
-        composite: c.globalCompositeOperation
-      }
       c.fillStyle = 'white';
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
-      c.fillStyle = cache.fillStyle;
-      c.globalCompositeOperation = cache.composite;
+      c.fillStyle = settings.color;
+      c.globalCompositeOperation = settings.composite;
       break;
     }
     case 'current color': {
-      var cache = {
-        fillStyle: c.color,
-        composite: c.globalCompositeOperation
-      }
       c.fillStyle = settings.strokeStyle;
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
-      c.fillStyle = cache.fillStyle;
-      c.globalCompositeOperation = cache.composite;
+      c.fillStyle = settings.color;
+      c.globalCompositeOperation = settings.composite;
       break;
     }
   }
   var data = $c[0].toDataURL();
-  window.open(data, save['file name']).focus();
+  window.open(data, '_blank').focus();
 
-  c.putImageData(window.points.history[window.points.history.length-1].data, 0, 0);
+  c.putImageData(cData, 0, 0);
 
 }
 
@@ -109,9 +102,7 @@ function save() {
     $(this).parents('form').find('h1').each(function(i) {
       if( i > 0 ) {
         var key = $(this).html().toLowerCase();
-        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
-        if( key !== 'file name' ) value = key.toLowerCase();
-        
+        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html().toLowerCase();
         window[v][key] = value;
       }
     })

@@ -21,10 +21,11 @@ $('a[href^="http"]').on('tap', function(e) {
 })
 
 function save() {
+  var cData = c.getImageData(0, 0, width(), height());
   switch(save.background) {
     case 'white': {
       var cache = {
-        fillStyle: c.color,
+        color: c.color,
         composite: c.globalCompositeOperation
       }
       c.fillStyle = 'white';
@@ -47,18 +48,11 @@ function save() {
       break;
     }
   }
-  var data = $c[0].toDataURL(); 
-  var file = dataToBlob($c[0].toDataURL());
-  var pics = navigator.getDeviceStorage('pictures');
-  var r = pics.addNamed(file, save['file name'] + '.png');
-  r.onsuccess = function() {
-    alert('Your sketch was successfuly saved to ' + this.result); 
-  }
-  r.onerror = function() {
-    alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
-    console.warn(this.error);
-  }
-  c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
+  var data = $c[0].toDataURL();
+  window.open(data, '_blank').focus();
+
+  c.putImageData(cData, 0, 0);
+
 }
 
   $('.menu').tap(function() {
@@ -134,9 +128,7 @@ function save() {
     $(this).parents('form').find('h1').each(function(i) {
       if( i > 0 ) {
         var key = $(this).html().toLowerCase();
-        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
-        if( key !== 'file name' ) value = value.toLowerCase();
-        
+        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html().toLowerCase();
         window[v][key] = value;
       }
     })

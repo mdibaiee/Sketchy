@@ -23,27 +23,18 @@ $('a[href^="http"]').on('tap', function(e) {
 window.save = function() {
   switch(save.background) {
     case 'white': {
-      var cache = {
-        fillStyle: c.color,
-        composite: c.globalCompositeOperation
-      }
       c.fillStyle = 'white';
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
-      c.fillStyle = cache.fillStyle;
-      c.globalCompositeOperation = cache.composite;
+      c.fillStyle = settings.color;
+      c.globalCompositeOperation = settings.composite;
       break;
     }
     case 'current color': {
-      var cache = {
-        fillStyle: c.color,
-        composite: c.globalCompositeOperation
-      }
       c.fillStyle = settings.strokeStyle;
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
-      c.fillStyle = cache.fillStyle;
-      c.globalCompositeOperation = cache.composite;
+      c.globalCompositeOperation = settings.composite;
       break;
     }
   }

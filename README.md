@@ -26,6 +26,7 @@ Changelog
 * No load-time for Mobile
 * Added preloader for images
 * Fixed low lineWidth for sketches rendering invisible in Chrome
+* Fixed background settings not applying ( save )
 
 License
 =======
