@@ -8,7 +8,7 @@ $('*').click(function(e) {
   e.preventDefault();
 })
 
-$('a[href^="http"]').on('tap', function(e) {
+$('a[href^="http"]').tap(function(e) {
   e.preventDefault();
   var href = $(this).attr('href');
   var view = new MozActivity({
@@ -16,6 +16,18 @@ $('a[href^="http"]').on('tap', function(e) {
     data: {
       type: 'url',
       url: href
+    }
+  })
+})
+
+$('a[href^="mailto"]').tap(function(e) {
+  e.preventDefault();
+  var mail = /mailto:(.*)/.exec($(this).attr('href'))[1];
+  var mail = new MozActivity({
+    name: 'new',
+    data: {
+      type: 'mail',
+      url: mail
     }
   })
 })
