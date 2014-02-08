@@ -3,16 +3,16 @@
   "description": "Free Sketch/Paint app",
   "version": "1",
   "default_locale": "en",
-  "launch_path": "/Sketchy/index.html",
+  "launch_path": "/Sketchy/Web/index.html",
   "icons": {
-    "16": "/Sketchy/img/icons/icon16.png",
-    "32": "/Sketchy/img/icons/icon32.png",
-    "48": "/Sketchy/img/icons/icon48.png",
-    "60": "/Sketchy/img/icons/icon60.png",
-    "64": "/Sketchy/img/icons/icon64.png",
-    "90": "/Sketchy/img/icons/icon90.png",
-    "120": "/Sketchy/img/icons/icon120.png",
-    "128": "/Sketchy/img/icons/icon128.png"
+    "16": "/Sketchy/Web/img/icons/icon16.png",
+    "32": "/Sketchy/Web/img/icons/icon32.png",
+    "48": "/Sketchy/Web/img/icons/icon48.png",
+    "60": "/Sketchy/Web/img/icons/icon60.png",
+    "64": "/Sketchy/Web/img/icons/icon64.png",
+    "90": "/Sketchy/Web/img/icons/icon90.png",
+    "120": "/Sketchy/Web/img/icons/icon120.png",
+    "128": "/Sketchy/Web/img/icons/icon128.png"
   },
   "developer": {
     "name": "Mahdi Dibaiee",
