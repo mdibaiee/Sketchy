@@ -106,8 +106,7 @@ $(document).ready(function() {
                 alert('The app was installed successfuly');
               }
               ins.onerror = function() {
-                alert('There was an error installing app')
-                console.log(this.error);
+                alert('There was an error installing app - ' + this.error.name)
               }
             }
           }
