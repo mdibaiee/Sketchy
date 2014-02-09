@@ -89,9 +89,10 @@ $(document).ready(function() {
 
   // Check for Update
 
-  var request = navigator.mozApps.checkInstalled('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+  var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
-    if( !this.result && confirm('A new version is available, do you want to update?') ) {
+    var app = this.result[0];
+    if( !app && confirm('A new version is available, do you want to update?') ) {
       var ins = navigator.mozApps.install('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
         alert('The app was installed successfuly');
