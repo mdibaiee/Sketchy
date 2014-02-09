@@ -93,7 +93,7 @@ $(document).ready(function() {
   request.onsuccess = function() {
     var app = this.result[0];
     var latest = $.ajax({url:'manifest-web.webapp'});
-    latest.onsuccess = function() {
+    latest.onload = function() {
       if( this.response ) {
         var lapp = JSON.parse(this.response);
         console.log(lapp.version);
