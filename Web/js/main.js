@@ -100,7 +100,7 @@ $(document).ready(function() {
         console.log(app.manifest.version);
         if( lapp.version != app.manifest.version && 
         confirm('A new version of this app is available, do you want to update?')) {
-          var ins = navigator.mozApps.install('/Sketchy/Web/manifest-web.webapp');
+          var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
           ins.onsuccess = function() {
             alert('The app was installed successfuly');
           }
@@ -112,7 +112,7 @@ $(document).ready(function() {
       }
     }
     if( !app && confirm('Do you want to Install this app?') ) {
-      var ins = navigator.mozApps.install('/Sketchy/Web/manifest-web.webapp');
+      var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
         alert('The app was installed successfuly');
       }
