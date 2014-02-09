@@ -100,12 +100,13 @@ $(document).ready(function() {
         console.log(app.manifest.version);
         if( lapp.version != app.manifest.version && 
         confirm('A new version of this app is available, do you want to update?')) {
-          var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+          var ins = navigator.mozApps.install();
           ins.onsuccess = function() {
             alert('The app was installed successfuly');
           }
           ins.onerror = function() {
             alert('There was an error installing app')
+            console.log(this.error);
           }
         }
       }
@@ -117,6 +118,7 @@ $(document).ready(function() {
       }
       ins.onerror = function() {
         alert('There was an error installing app')
+        console.log(this.error);
       }
     }
   }
