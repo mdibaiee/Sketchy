@@ -92,7 +92,13 @@ $(document).ready(function() {
   var request = navigator.mozApps.checkInstalled('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
   request.onsuccess = function() {
     if( !this.result && confirm('A new version is available, do you want to update?') ) {
-      navigator.mozApps.install('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+      var ins = navigator.mozApps.install('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+      ins.onsuccess = function() {
+        alert('The app was installed successfuly');
+      }
+      ins.onerror = function() {
+        alert('There was an error installing app')
+      }
     }
   }
   request.onerror = function() {
