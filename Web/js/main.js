@@ -99,8 +99,8 @@ $(document).ready(function() {
         console.log(lapp.version);
         console.log(app.manifest.version);
         if( lapp.version != app.manifest.version && 
-        confirm('A new version of this app is available, do you want to update?')) {
-          var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+        confirm('A new version of this app is available, do you want to update? ' + app.manifest.version + ' to ' + lapp.version )) {
+          var ins = app.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
           ins.onsuccess = function() {
             alert('The app was installed successfuly');
           }
