@@ -91,9 +91,21 @@ $(document).ready(function() {
 
   var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
+    var update;
+    var selfApp = navigator.mozApps.getSelf();
+    selfApp.onsuccess = function() {
+      if( this.result ) update = true;
+      else update = false;
+    }
+    selfApp.onsuccess = function() {
+      update = false;
+    }
     var app = this.result[0];
-    if( !app && confirm('A new version is available, do you want to update?') ) {
-      var ins = navigator.mozApps.install('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+    if( !app ) {
+      if( update ) confirm('A new version is available, do you want to update?')
+      else confirm('Do you want to Install this app?');
+
+      var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
         alert('The app was installed successfuly');
       }
