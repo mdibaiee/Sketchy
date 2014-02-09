@@ -51,16 +51,38 @@ window.save = function() {
     }
   }
   var data = $c[0].toDataURL(); 
-  var file = dataToBlob($c[0].toDataURL());
-  var pics = navigator.getDeviceStorage('pictures');
-  var r = pics.addNamed(file, save['file name'] + '.png');
-  r.onsuccess = function() {
-    alert('Your sketch was successfuly saved to ' + this.result); 
-  }
-  r.onerror = function() {
-    alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
+  if( save.type == 'sketchy project' ) {
+    if( localStorage.getItem(save['file name']) ) {
+      if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
+        localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points}));
+      }
+    }
+    else
+      localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points})); 
+  } else {
+    var file = dataToBlob($c[0].toDataURL());
+    var pics = navigator.getDeviceStorage('pictures');
+    var r = pics.addNamed(file, save['file name'] + '.png');
+    r.onsuccess = function() {
+      alert('Your sketch was successfuly saved to ' + this.result); 
+    }
+    r.onerror = function() {
+      alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
+    }
   }
   c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
+}
+window.load = function() {
+  var file = JSON.parse(localStorage.getItem(load.file));
+  var img = document.createElement('img');
+  img.src = file.data;
+  console.log(file.data);
+  img.onload = function() {
+    c.clearRect(0, 0, width(), height());
+    c.drawImage(img, 0, 0);
+    window.points = file.points;
+    window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}, { data: c.getImageData(0, 0, width(), height()), points: file.points}];
+  }
 }
 
   $('.menu').tap(function() {
@@ -68,6 +90,36 @@ window.save = function() {
   })
   $('.save').tap(function() {
     $('#save').removeClass('hidden');
+  })
+  $('.load').tap(function() {
+    $('#load').removeClass('hidden');
+    $('#load li').remove();
+    for( var i = 0, len = localStorage.length; i < len; i++ ) {
+      $('#load ol').append(
+        $('<li><label><span>' + localStorage.key(i) + '</span></label></li>')
+      );
+    }
+    if( localStorage.length < 1 ) {
+      $('#load ol').append(
+        $('<p>No Sketch found.</p>')
+      );
+    }
+    $confirm.find('li').off('tap').tap(function(e) {
+      $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
+      $(this).attr('aria-selected', 'true');
+    })
+  })
+  $('#pro').click(function() {
+    $('#save ol:nth-of-type(2) li').each(function() {
+      if( $(this).find('span').html() !== 'Transparent' ) {
+        $(this).addClass('hidden');
+        $(this).removeAttr('aria-selected');
+      }
+      else $(this).attr('aria-selected', 'true');
+    })
+  })
+  $('#exp').click(function() {
+    $('#save ol:nth-of-type(2) li').removeClass('hidden');
   })
   $c.last().on('touchstart', function(e) {
     var xy = relative(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
@@ -126,28 +178,31 @@ window.save = function() {
 
   var $confirm = $('form[data-type="value-selector"].confirm');
 
-  $confirm.find('li').tap(function(e) {
-    $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
-    $(this).attr('aria-selected', 'true');
-  })
-  $confirm.find('button').last().tap(function(e) {
-    e.preventDefault();
-    var v = $(this).parents('form').attr('id');
-    $(this).parents('form').find('h1').each(function(i) {
-      if( i > 0 ) {
-        var key = $(this).html().toLowerCase();
-        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
-        if( key !== 'file name' ) value = value.toLowerCase();
-        
-        window[v][key] = value;
-      }
+  $confirm.each(function() {
+  
+    $(this).find('li').click(function(e) {
+      $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
+      $(this).attr('aria-selected', 'true');
     })
-    $(this).parents('form').addClass('hidden');
-    window[v]();
-  })
-  $confirm.find('button').first().tap(function(e) {
-    e.preventDefault();
-    $(this).parents('form').addClass('hidden');
+    $(this).find('button').last().click(function(e) {
+      e.preventDefault();
+      var v = $(this).parents('form').attr('id');
+      $(this).parents('form').find('h1').each(function(i) {
+        if( i > 0 ) {
+          var key = $(this).html().toLowerCase();
+          var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
+          if( key !== 'file name' && key !== 'file' ) value = value.toLowerCase();
+          window[v][key] = value;
+        }
+      })
+      $(this).parents('form').addClass('hidden');
+      window[v]();
+    })
+    $(this).find('button').first().click(function(e) {
+      e.preventDefault();
+      $(this).parents('form').addClass('hidden');
+    })
+  
   })
 
   // Value Selector Callers

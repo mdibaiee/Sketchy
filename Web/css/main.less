@@ -1,4 +1,7 @@
 @import 'fonts';
+@import 'color-picker';
+@import 'seekbars';
+@import 'value_selector';
 
 
 html, body {
@@ -145,6 +148,14 @@ header {
     float: right;
     &:active {
       background: url('imgs/download.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
+    }
+  }
+
+  .load {
+    background: url('imgs/load.png') center center no-repeat;
+    float: right;
+    &:active {
+      background: url('imgs/load.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
     }
   }
 

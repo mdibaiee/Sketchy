@@ -21,6 +21,10 @@ Firefox Marketplace: https://marketplace.firefox.com/app/sketchy/
 Changelog
 =========
 
+**1.2**
+* Added an option to save sketches as a project, so they are editable[1]
+* Made Firefox Desktop / Firefox Android versions working ( was blocked by [1] )
+
 **1.1**
 * Added "About"
 * No load-time for Mobile

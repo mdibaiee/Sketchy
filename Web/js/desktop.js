@@ -2,40 +2,41 @@
 
 $(window).resize(sizeAndPos);
 
-// Check for update
-
-function save() {
-  var cData = c.getImageData(0, 0, width(), height());
-  switch(save.background) {
-    case 'white': {
-      c.fillStyle = 'white';
-      c.globalCompositeOperation = 'destination-over';
-      c.fillRect(0, 0, width(), height());
-      c.fillStyle = settings.color;
-      c.globalCompositeOperation = settings.composite;
-      break;
-    }
-    case 'current color': {
-      c.fillStyle = settings.color;
-      c.globalCompositeOperation = 'destination-over';
-      c.fillRect(0, 0, width(), height());
-      c.fillStyle = settings.color;
-      c.globalCompositeOperation = settings.composite;
-      break;
-    }
-  }
-  var data = $c[0].toDataURL();
-  window.open(data, '_blank').focus();
-
-  c.putImageData(cData, 0, 0);
-
-}
-
   $('.menu').click(function() {
     $('#menu').toggleClass('pulled');
   })
   $('.save').click(function() {
     $('#save').removeClass('hidden');
+  })
+  $('.load').click(function() {
+    $('#load').removeClass('hidden');
+    $('#load li').remove();
+    for( var i = 0, len = localStorage.length; i < len; i++ ) {
+      $('#load ol').append(
+        $('<li><label><span>' + localStorage.key(i) + '</span></label></li>')
+      );
+    }
+    if( localStorage.length < 1 ) {
+      $('#load ol').append(
+        $('<p>No sketch found.</p>')
+      );
+    }
+    $confirm.find('li').off('click').click(function(e) {
+      $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
+      $(this).attr('aria-selected', 'true');
+    })
+  })
+  $('#pro').click(function() {
+    $('#save ol:nth-of-type(2) li').each(function() {
+      if( $(this).find('span').html() !== 'Transparent' ) {
+        $(this).addClass('hidden');
+        $(this).removeAttr('aria-selected');
+      }
+      else $(this).attr('aria-selected', 'true');
+    })
+  })
+  $('#exp').click(function() {
+    $('#save ol:nth-of-type(2) li').removeClass('hidden');
   })
   $c.last().on('mousedown', function(e) {
     e.preventDefault();
@@ -68,7 +69,7 @@ function save() {
   
   // Single
   
-  var $single = $('form[data-type="value-selector"].single');
+  var $single = $('form.single');
 
   $single.find('li').click(function(e) {
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
@@ -90,28 +91,33 @@ function save() {
 
   // Confirm
   
-  var $confirm = $('form[data-type="value-selector"].confirm');
+  var $confirm = $('form.confirm');
 
-  $confirm.find('li').click(function(e) {
-    $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
-    $(this).attr('aria-selected', 'true');
-  })
-  $confirm.find('button').last().click(function(e) {
-    e.preventDefault();
-    var v = $(this).parents('form').attr('id');
-    $(this).parents('form').find('h1').each(function(i) {
-      if( i > 0 ) {
-        var key = $(this).html().toLowerCase();
-        var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html().toLowerCase();
-        window[v][key] = value;
-      }
+  $confirm.each(function() {
+  
+    $(this).find('li').click(function(e) {
+      $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
+      $(this).attr('aria-selected', 'true');
     })
-    $(this).parents('form').addClass('hidden');
-    window[v]();
-  })
-  $confirm.find('button').first().click(function(e) {
-    e.preventDefault();
-    $(this).parents('form').addClass('hidden');
+    $(this).find('button').last().click(function(e) {
+      e.preventDefault();
+      var v = $(this).parents('form').attr('id');
+      $(this).parents('form').find('h1').each(function(i) {
+        if( i > 0 ) {
+          var key = $(this).html().toLowerCase();
+          var value = $(this).parent().find('ol:nth-of-type('+i+') li[aria-selected] span').html();
+          if( key !== 'file name' && key !== 'file' ) value = value.toLowerCase();
+          window[v][key] = value;
+        }
+      })
+      $(this).parents('form').addClass('hidden');
+      window[v]();
+    })
+    $(this).find('button').first().click(function(e) {
+      e.preventDefault();
+      $(this).parents('form').addClass('hidden');
+    })
+  
   })
 
   // Value Selector Callers

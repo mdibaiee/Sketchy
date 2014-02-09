@@ -35,4 +35,65 @@ $(document).ready(function() {
     nope: ['js/desktop.js', 'js/libs/color-picker.js']
   })
 
+
+  function save() {
+    switch(save.background) {
+      case 'white': {
+        c.fillStyle = 'white';
+        c.globalCompositeOperation = 'destination-over';
+        c.fillRect(0, 0, width(), height());
+        c.fillStyle = settings.color;
+        c.globalCompositeOperation = settings.composite;
+        break;
+      }
+      case 'current color': {
+        c.fillStyle = settings.color;
+        c.globalCompositeOperation = 'destination-over';
+        c.fillRect(0, 0, width(), height());
+        c.fillStyle = settings.color;
+        c.globalCompositeOperation = settings.composite;
+        break;
+      }
+    }
+
+    var data = $c[0].toDataURL();
+
+    if( save.type == 'sketchy project' ) {
+    if( localStorage.getItem(save['file name']) ) {
+      if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
+        localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points}));
+      }
+    }
+    else
+      localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points})); 
+    } else {
+      window.open(data, '_blank').focus();
+    }
+
+    c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
+  }
+
+  function load() {
+    var file = JSON.parse(localStorage.getItem(load.file));
+    var img = document.createElement('img');
+    img.src = file.data;
+    img.onload = function() {
+      c.clearRect(0, 0, width(), height());
+      c.drawImage(img, 0, 0);
+      window.points = file.points;
+      window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}, { data: c.getImageData(0, 0, width(), height()), points: file.points}];
+    }
+  }
+  window.load = load;
+  window.save = save;
+
+  // Check for Update
+
+  var request = navigator.mozApps.getSelf();
+
+  request.onsuccess = function() {
+    var manifest = this.manifest;
+
+  }
+
 })

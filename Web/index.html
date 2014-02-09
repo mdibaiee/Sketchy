@@ -5,12 +5,7 @@
     <title>Sketchy</title>
     <meta charset='UTF-8'>
     <meta name="viewport" content="width=device-width user-scalable=no initial-scale=1">
-    <link rel='stylesheet/less' href='css/main.less'>
-    <link rel='stylesheet' href='css/switches.css'>
-    <link rel='stylesheet' href='css/value_selector.css'>
-    <link rel='stylesheet' href='css/seekbars.css'>
-    <link rel='stylesheet' href='css/color-picker.css'>
-    <script src='js/less-1.5.0.min.js'></script>
+    <link rel='stylesheet' href='css/main.css'>
     <script src='js/libs/mobilebrowsers.js'></script>
   </head>
   
@@ -22,6 +17,7 @@
       <p id='title'>Sketchy</p>
       <button class='save'></button>
       <span class='separator small right'></span>
+      <button class='load'></button>
     </header>
 
     <div id='container'>
@@ -132,18 +128,40 @@
     <form role='dialog' data-type='value-selector' id='save' class='hidden confirm'>
       <section class='scrollable'>
         <h1>Save</h1>
+        <h1>Type</h1>
+        <ol role='listbox'>
+          <li id='exp' aria-selected='true'><label><span>Export to Image</span></label></li>
+          <li id='pro'><label><span>Sketchy Project</span></label></li>
+        </ol>
         <h1>Background</h1>
         <ol role='listbox'>
           <li aria-selected='true'><label><span>White</span></label></li>
           <li><label><span>Current Color</span></label></li>
           <li><label><span>Transparent</span></label></li>
         </ol>
+        <h1>File Name</h1>
+        <ol role='listbox'>
+          <li aria-selected='true' data-input><label><span contenteditable>My Sketch</span></label></li>
+        </ol>
         <br>
-        <span>Note: You must disable pop-up blocker to save your sketch.</span>
+        <span class='special'>Note: You must disable pop-up blocker to save your sketch.</span>
         </section>
       <menu>
         <button class='affirmative' type='button'>Cancel</button>
         <button class='affirmative' type='button'>Save</button>
+      </menu>
+    </form>
+
+    <form role='dialog' data-type='value-selector' id='load' class='hidden confirm'>
+      <section class='scrollable'>
+        <h1>Load</h1>
+        <h1 class='hidden'>file</h1>
+        <ol role='listbox'>
+        </ol>
+        </section>
+      <menu>
+        <button class='affirmative' type='button'>Cancel</button>
+        <button class='affirmative' type='button'>Load</button>
       </menu>
     </form>
 
@@ -180,13 +198,13 @@
 
     <!-- PRELOADER -->
     <div class='hidden'>
-      <img src='value_selector/images/ui/pattern.png'>
-      <img src='value_selector/images/ui/gradient.png'>
-      <img src='value_selector/images/ui/shadow.png'>
-      <img src='value_selector/images/ui/shadow-invert.png'>
-      <img src='value_selector/images/icons/checked.png'>
-      <img src='value_selector/images/ui/default.png'>
-      <img src='value_selector/images/ui/affirmative.png'>
+      <img src='css/value_selector/images/ui/pattern.png'>
+      <img src='css/value_selector/images/ui/gradient.png'>
+      <img src='css/value_selector/images/ui/shadow.png'>
+      <img src='css/value_selector/images/ui/shadow-invert.png'>
+      <img src='css/value_selector/images/icons/checked.png'>
+      <img src='css/value_selector/images/ui/default.png'>
+      <img src='css/value_selector/images/ui/affirmative.png'>
     </div>
 
     <script src='js/libs/yepnope.min.js'></script>

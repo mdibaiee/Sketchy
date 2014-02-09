@@ -1,0 +1,604 @@
+@font-face {
+  font-family: 'MozTT-Regular';
+  src: url('fonts/MozTT-Regular.ttf');
+}
+@font-face {
+  font-family: 'MozTT-Light';
+  src: url('fonts/MozTT-Light.ttf');
+}
+@font-face {
+  font-family: 'MozTT-Medium';
+  src: url('fonts/MozTT-Medium.ttf');
+}
+@font-face {
+  font-family: 'MozTT-Bold';
+  src: url('fonts/MozTT-Bold.ttf');
+}
+/* Purty Picker Copyright 2013 Jayden Seric (MIT license): https://github.com/jaydenseric/Purty-Picker */
+/* Core: No touchy! */
+.color-picker .spectrum {
+  position: relative;
+  /* To position pin, luminosity filter */
+  background: linear-gradient(#808080, transparent), linear-gradient(90deg, #ff0000, #ff2b00, #ff5500, #ff8000, #ffaa00, #ffd500, #ffff00, #d4ff00, #aaff00, #80ff00, #55ff00, #2bff00, #00ff00, #00ff2b, #00ff55, #00ff80, #00ffaa, #00ffd5, #00ffff, #00d4ff, #00aaff, #007fff, #0055ff, #002bff, #0000ff, #2a00ff, #5500ff, #7f00ff, #aa00ff, #d400ff, #ff00ff, #ff00d4, #ff00aa, #ff0080, #ff0055, #ff002b, #ff0000);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Prevent pin interaction causing content selection */
+  cursor: crosshair;
+}
+.color-picker .spectrum.active {
+  cursor: none;
+}
+.color-picker .spectrum.active .pin {
+  cursor: none;
+}
+.color-picker .spectrum > div {
+  /* Luminosity filter */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.color-picker .spectrum .pin {
+  position: absolute;
+  cursor: move;
+}
+/* Customization: Default skin */
+.color-picker {
+  margin: 20px;
+  padding: 11px;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+.color-picker .color,
+.color-picker .luminosity {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
+.color-picker .format {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+.color-picker .color {
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 2px;
+  padding: 10px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  color: rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: color 0.2s;
+}
+.color-picker .color.dark {
+  color: rgba(255, 255, 255, 0.7);
+}
+.color-picker .spectrum {
+  height: 150px;
+  /* Arbitary but required */
+  overflow: hidden;
+  /* Prevent pin overflowing container */
+  border-radius: 2px;
+  margin: 10px 0;
+}
+.color-picker .spectrum > div {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.color-picker .spectrum .pin {
+  margin-left: -4px;
+  margin-top: -4px;
+  width: 4px;
+  height: 4px;
+  border: 2px solid white;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 100%;
+}
+.color-picker .luminosity {
+  margin: 0;
+}
+/* ----------------------------------
+* Seekbars
+* ---------------------------------- */
+div[role="slider"] {
+  position: relative;
+  height: 3.5rem;
+}
+div[role="slider"] > div {
+  display: block;
+  padding: 0;
+  overflow-y: hidden;
+  position: relative;
+  height: 100%;
+}
+div[role="slider"] progress {
+  width: 100%;
+  background: #000;
+  border: none;
+  height: 0.1rem;
+  display: block;
+  border-radius: 0;
+  margin-top: 1.9rem;
+}
+div[role="slider"] progress::-moz-progress-bar {
+  background: #01c5ed;
+  height: 0.6rem;
+  margin-top: -0.3rem;
+  border-radius: 0;
+}
+div[role="slider"] > label {
+  font-size: 1.5rem;
+  line-height: 3.8rem;
+  font-family: sans-serif;
+  color: #00aacb;
+  float: right;
+  padding: 0 0 0 1rem;
+  height: 3.5rem;
+  width: auto;
+}
+div[role="slider"] label:first-of-type {
+  float: left;
+  padding: 0 1rem 0 0;
+}
+div[role="slider"] > label.icon {
+  width: 3rem;
+  height: 3rem;
+  margin-top: 0.5rem;
+  font-size: 0;
+  background: no-repeat right top / 3rem auto;
+}
+div[role="slider"] > label.icon:first-of-type {
+  background-position: top left;
+}
+div[role="slider"] button {
+  width: 3.2rem;
+  height: 3.2rem;
+  background: url(seekbars/images/ui/handler.png) no-repeat center center / 3rem auto;
+  font: 0/0 a;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin: -1.5rem 0 0 -1.6rem;
+  border-radius: 3.2rem;
+  border: solid 0.1rem transparent;
+  transition: border 0.15s ease;
+  padding: 0;
+  z-index: 10;
+}
+div[role="slider"] button:active {
+  border: solid 0.5rem #01c5ed;
+}
+/* ----------------------------------
+ * Value selector (Single & Multiple)
+ * ---------------------------------- */
+/* Main dialog setup */
+form[role="dialog"][data-type="value-selector"] {
+  background: url(value_selector/images/ui/pattern.png) repeat left top, url(value_selector/images/ui/gradient.png) no-repeat left top / 100% 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 0 7rem;
+  color: #fff;
+  font-family: sans-serif;
+}
+form[role="dialog"][data-type="value-selector"] > section {
+  padding: 0 1.5rem 0;
+  -moz-box-sizing: padding-box;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+form[role="dialog"][data-type="value-selector"] h1 {
+  font-weight: 400;
+  font-size: 1.9rem;
+  line-height: 4.8rem;
+  color: #fff;
+  border-bottom: 0.1rem solid #616262;
+  background: rgba(0, 0, 0, 0.2);
+  margin: 0 -1.5rem;
+  padding: 0 3rem 1rem;
+  height: 4.8rem;
+  -moz-box-sizing: border-box;
+}
+/* Specific component code */
+form[role="dialog"][data-type="value-selector"] [role="listbox"] {
+  position: relative;
+  padding: 0;
+  margin: 0 -1.5rem;
+  max-height: calc(95%);
+  overflow: auto;
+  border-top: solid 0.1rem #222323;
+}
+form[role="dialog"][data-type="value-selector"] .scrollable:before {
+  content: "";
+  display: block;
+  position: absolute;
+  pointer-events: none;
+  top: 4.8rem;
+  left: 0;
+  right: 0;
+  bottom: 6.9rem;
+  background: url(value_selector/images/ui/shadow.png) repeat-x left top, url(value_selector/images/ui/shadow-invert.png) repeat-x left bottom;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li {
+  margin: 0;
+  padding: 0 1.5rem;
+  height: auto;
+  list-style: none;
+  position: relative;
+  font-weight: lighter;
+  font-size: 2.2rem;
+  line-height: 3.9rem;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:first-child label {
+  border-top-color: transparent;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li label {
+  outline: none;
+  display: block;
+  color: #fff;
+  border-top: 0.1rem solid #666;
+  border-bottom: 0.1rem solid #000;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:last-child label {
+  border-bottom-color: transparent;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li label span {
+  display: block;
+  padding: 1rem 1.5rem;
+  line-height: 4rem;
+  word-wrap: break-word;
+}
+/* Pressed status */
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:active {
+  background-color: #00ABCC;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:active label {
+  border-color: transparent;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:active + li label {
+  border-top-color: #000;
+}
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li:active label span {
+  color: #fff !important;
+  background-image: none;
+}
+/* Checked status */
+form[role="dialog"][data-type="value-selector"] [role="listbox"] li[aria-selected="true"]:not([data-input]) span {
+  padding-right: 2.6rem;
+  margin-right: 1.2rem;
+  color: #00abcd;
+  background: transparent url(value_selector/images/icons/checked.png) no-repeat 100% 50%;
+  background-size: 2rem;
+}
+/* Menu & buttons setup */
+form[role="dialog"][data-type="value-selector"] menu {
+  white-space: nowrap;
+  margin: 0;
+  padding: 1.5rem;
+  border-top: solid 0.1rem rgba(255, 255, 255, 0.1);
+  background: #2d2d2d url(value_selector/images/ui/pattern.png) repeat left top;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+form[role="dialog"][data-type="value-selector"] menu button::-moz-focus-inner {
+  border: none;
+  outline: none;
+}
+form[role="dialog"][data-type="value-selector"] menu button {
+  width: calc(49.5%);
+  height: 3.8rem;
+  margin: 0 0 1rem;
+  padding: 0 1.5rem;
+  -moz-box-sizing: border-box;
+  display: inline-block;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background: #fafafa url(value_selector/images/ui/default.png) repeat-x left bottom / auto 100%;
+  border: 0.1rem solid #a6a6a6;
+  border-radius: 0.3rem;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 3.8rem;
+  color: #333;
+  text-align: center;
+  text-shadow: 0.1rem 0.1rem 0 rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  outline: none;
+}
+/* Press (default & affirmative) */
+form[role="dialog"][data-type="value-selector"] menu button:active,
+form[role="dialog"][data-type="value-selector"] menu button.affirmative:active {
+  border-color: #008aaa;
+  background: #008aaa;
+  color: #333;
+}
+/* affirmative */
+form[role="dialog"][data-type="value-selector"] menu button.affirmative {
+  background-image: url(value_selector/images/ui/affirmative.png);
+  background-color: #00caf2;
+  border-color: #008eab;
+}
+form[role="dialog"][data-type="value-selector"] menu button:last-child {
+  margin-left: 1rem;
+}
+form[role="dialog"][data-type="value-selector"] menu button,
+form[role="dialog"][data-type="value-selector"] menu button:first-child {
+  margin: 0;
+}
+form[role="dialog"][data-type="value-selector"] menu button.full {
+  width: 100%;
+}
+/* Right to left tweaks */
+html[dir="rtl"] #value-selector li input:checked + span,
+html[dir="rtl"] #value-selector li[aria-selected="true"] span {
+  padding-left: 2.6rem;
+  margin-left: 1.2rem;
+}
+html,
+body {
+  margin: 0;
+  font-size: 10px;
+  overflow: hidden;
+}
+*::-moz-focus-inner {
+  border: none;
+}
+*:focus {
+  outline: none;
+}
+.hidden {
+  display: none;
+  visibility: none;
+}
+div#container {
+  position: absolute;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.separator {
+  display: block;
+  height: 4.8rem;
+  width: 0.1rem;
+}
+.separator.long {
+  background: url('imgs/div_line_lg_black.png');
+}
+.separator.small {
+  background: url('imgs/div_line_sm_black.png');
+}
+.separator.left {
+  float: left;
+}
+.separator.right {
+  float: right;
+}
+.separator.menu {
+  position: relative;
+  left: -3rem;
+}
+.overlay {
+  z-index: 9999;
+  position: absolute;
+  left: 0;
+  top: 5.3rem;
+}
+button {
+  -moz-appearance: none;
+  z-index: 1;
+  position: relative;
+  border: none;
+}
+.close {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  padding: 0 0 0.2rem 0.2rem;
+  font-size: 10pt;
+  border: 1px solid #e3e3e3;
+  border-radius: 50%;
+  position: absolute;
+  text-align: center;
+  top: -2%;
+  left: 97%;
+}
+.picker,
+.about {
+  font-family: 'MozTT-Light';
+  width: 30rem;
+  height: 24.6rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -12.3rem;
+  margin-left: -15rem;
+}
+.picker .color-picker,
+.about .color-picker {
+  margin: 0;
+}
+.about {
+  background: #262626;
+  padding: 1rem 2rem;
+  height: 23rem;
+  margin-top: -11.5rem;
+  margin-left: -17rem;
+  border-radius: 0.2rem;
+  color: white;
+  box-shadow: 0 0 0.3rem black;
+}
+.about a,
+.about a:link,
+.about a:visited,
+.about a:active {
+  color: white;
+}
+.about .close {
+  background: #262626;
+  color: white;
+  border: 1px solid gray;
+}
+.about p {
+  font-size: 11pt;
+}
+.about span {
+  font-size: 8pt;
+}
+header {
+  width: 100%;
+  height: 5.3rem;
+  background: url('imgs/header_bg_black.png');
+}
+header button {
+  width: 5rem;
+  height: 5rem;
+}
+header .menu {
+  background: url('imgs/menu.png') -12px center no-repeat;
+  float: left;
+}
+header .menu:active {
+  background: url('imgs/menu.png') -12px center no-repeat, url('imgs/bg_overlay_pressed_1.png') left no-repeat;
+}
+header .save {
+  background: url('imgs/download.png') center center no-repeat;
+  float: right;
+}
+header .save:active {
+  background: url('imgs/download.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
+}
+header .load {
+  background: url('imgs/load.png') center center no-repeat;
+  float: right;
+}
+header .load:active {
+  background: url('imgs/load.png') center center no-repeat, url('imgs/bg_overlay_pressed_2.png') center center;
+}
+header #title {
+  color: white;
+  font-size: 11pt;
+  font-family: 'MozTT-Regular';
+  float: left;
+  margin: 1.5rem 0;
+  position: relative;
+  left: -2rem;
+}
+#menu {
+  height: 100%;
+  width: 15rem;
+  background: #262626;
+  position: absolute;
+  left: -15rem;
+  top: 5rem;
+  color: white;
+  font-family: 'MozTT-Light';
+  font-size: 8pt;
+  transition: left 0.2s ease-out;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+#menu.pulled {
+  left: 0;
+  transition: left 0.2s ease-out;
+}
+#menu button[id^='set'],
+#menu p,
+#menu .bottom button {
+  background: none;
+  display: block;
+  width: 75%;
+  color: white;
+  text-align: left;
+  margin: 1rem 2.5rem;
+  font-family: 'MozTT-Light';
+  font-size: 8pt;
+  padding: 0 0.6rem;
+  cursor: pointer;
+}
+#menu span {
+  float: right;
+  font-size: 7pt;
+}
+#menu div[role='slider'] {
+  width: 60%;
+  float: right;
+  margin: 0 2rem 0 0;
+}
+#menu div[role='slider'] div {
+  overflow: visible;
+}
+#menu div[role='slider'] div button {
+  margin-top: -3.4rem;
+  left: 0%;
+}
+#menu hr {
+  clear: both;
+  padding: 0.7rem 0;
+  margin-bottom: 0.7rem;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+#menu *[class^='icon'] {
+  display: block;
+  margin: 1rem 0.5rem;
+}
+#menu *[class^='icon']:nth-of-type(2) {
+  padding-top: 0.5rem;
+}
+#menu *[class^='icon']:before {
+  content: '';
+  background-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  float: left;
+  margin: -0.3rem 0.5rem 0 0;
+}
+#menu .icon-settings:before {
+  background-image: url('imgs/settings.png');
+}
+#menu .icon-clear:before {
+  background-image: url('imgs/clear.png');
+}
+#menu .icon-undo:before {
+  background-image: url('imgs/undo.png');
+}
+#menu .icon-redo:before {
+  background-image: url('imgs/redo.png');
+}
+#menu .options {
+  display: block;
+  margin-top: 1rem;
+}
+#menu .bottom {
+  position: absolute;
+  bottom: 5rem;
+  width: 100%;
+}
+#menu .bottom button[class^='icon'] {
+  margin-left: 3.5rem;
+}
+#menu .bottom button {
+  margin-left: 5rem;
+}
