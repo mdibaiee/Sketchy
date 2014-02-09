@@ -96,6 +96,8 @@ $(document).ready(function() {
     latest.onsuccess = function() {
       if( this.response ) {
         var lapp = JSON.parse(this.response);
+        console.log(lapp.version);
+        console.log(app.manifest.version);
         if( lapp.version != app.manifest.version && 
         confirm('A new version of this app is available, do you want to update?')) {
           var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
