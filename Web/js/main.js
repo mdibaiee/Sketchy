@@ -91,20 +91,24 @@ $(document).ready(function() {
 
   var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
-    var update;
-    var selfApp = navigator.mozApps.getSelf();
-    selfApp.onsuccess = function() {
-      if( this.result ) update = true;
-      else update = false;
-    }
-    selfApp.onsuccess = function() {
-      update = false;
-    }
     var app = this.result[0];
-    if( !app ) {
-      if( update ) confirm('A new version is available, do you want to update?')
-      else confirm('Do you want to Install this app?');
-
+    var latest = $.ajax({url:'manifest-web.webapp'});
+    latest.onsuccess = function() {
+      if( this.response ) {
+        var lapp = JSON.parse(this.response);
+        if( lapp.version != app.manifest.version && 
+        confirm('A new version of this app is available, do you want to update?')) {
+          var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+          ins.onsuccess = function() {
+            alert('The app was installed successfuly');
+          }
+          ins.onerror = function() {
+            alert('There was an error installing app')
+          }
+        }
+      }
+    }
+    if( !app && confirm('Do you want to Install this app?') ) {
       var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
         alert('The app was installed successfuly');
