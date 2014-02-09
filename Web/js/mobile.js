@@ -25,6 +25,18 @@ $('.load').tap(function() {
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
     $(this).attr('aria-selected', 'true');
   })
+  $('#pro').click(function() {
+    $('#save ol:nth-of-type(2) li').each(function() {
+      if( $(this).find('span').html() !== 'Transparent' ) {
+        $(this).addClass('hidden');
+        $(this).removeAttr('aria-selected');
+      }
+      else $(this).attr('aria-selected', 'true');
+    })
+  })
+  $('#exp').click(function() {
+    $('#save ol:nth-of-type(2) li').removeClass('hidden');
+  })
 })
 $('#pro').click(function() {
   $('#save ol:nth-of-type(2) li').each(function() {

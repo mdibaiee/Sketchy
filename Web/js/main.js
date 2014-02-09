@@ -89,11 +89,16 @@ $(document).ready(function() {
 
   // Check for Update
 
-  var request = navigator.mozApps.getSelf();
-
+  var request = navigator.mozApps.checkInstalled('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
   request.onsuccess = function() {
-    var manifest = this.manifest;
-
+    if( !this.result && confirm('A new version is available, do you want to update?') ) {
+      navigator.mozApps.install('mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
+    }
   }
+  request.onerror = function() {
+    alert('An error occured while trying to check for updates');
+  }
+
+  
 
 })
