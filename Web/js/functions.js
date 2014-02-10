@@ -10,7 +10,7 @@ function sizeAndPos() {
   $c.attr('height',h * window.devicePixelRatio);
   $c.css({
     'width' : w,
-    'height' : h
+    'height' : h - (window.devicePixelRatio-1) * 53
   });
   alert(window.devicePixelRatio);
   c.clearRect(0,0, width(), height());
