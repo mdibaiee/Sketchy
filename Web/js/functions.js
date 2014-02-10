@@ -12,6 +12,7 @@ function sizeAndPos() {
     'width' : w,
     'height' : h
   });
+  alert($(window).height());
   c.clearRect(0,0, width(), height());
   c.putImageData(data, 0, 0);
 }
