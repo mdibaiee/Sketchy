@@ -10,9 +10,9 @@ function sizeAndPos() {
   $c.attr('height',h * window.devicePixelRatio);
   $c.css({
     'width' : w,
-    'height' : h - (window.devicePixelRatio-1) * 53
+    'height' : h
   });
-  alert(window.devicePixelRatio);
+  $('body, html').css('height', h+53)
   c.clearRect(0,0, width(), height());
   c.putImageData(data, 0, 0);
 }
