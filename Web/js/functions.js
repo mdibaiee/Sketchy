@@ -12,7 +12,6 @@ function sizeAndPos() {
     'width' : w,
     'height' : h
   });
-  $('body, html').css('height', h+53)
   c.clearRect(0,0, width(), height());
   c.putImageData(data, 0, 0);
 }

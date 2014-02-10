@@ -89,12 +89,12 @@ $(document).ready(function() {
 
   // TODO: Check for Update
 
-  /*var request = navigator.mozApps.getInstalled();
+  var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
     var app = this.result[0];
     var latest = $.ajax({url:'manifest-web.webapp'});
     var selfApp = navigator.mozApps.getSelf();
-    selfApp.onsuccess = function() {
+    /*selfApp.onsuccess = function() {
       if(this.result) {
         latest.onload = function() {
           if( this.response ) {
@@ -114,7 +114,7 @@ $(document).ready(function() {
           }
         }
       }
-    }
+    }*/
     if( !app && confirm('Do you want to Install this app?') ) {
       var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
@@ -128,7 +128,7 @@ $(document).ready(function() {
   }
   request.onerror = function() {
     alert('An error occured while trying to check for updates');
-  }*/
+  }
 
   
 
