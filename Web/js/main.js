@@ -87,9 +87,9 @@ $(document).ready(function() {
   window.load = load;
   window.save = save;
 
-  // Check for Update
+  // TODO: Check for Update
 
-  var request = navigator.mozApps.getInstalled();
+  /*var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
     var app = this.result[0];
     var latest = $.ajax({url:'manifest-web.webapp'});
@@ -128,7 +128,7 @@ $(document).ready(function() {
   }
   request.onerror = function() {
     alert('An error occured while trying to check for updates');
-  }
+  }*/
 
   
 
