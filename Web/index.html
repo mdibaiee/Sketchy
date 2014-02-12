@@ -71,6 +71,13 @@
               </div>
             </div>
           </div>
+          
+          <div class='shape hidden'>
+            <p class='icon-settings'>Shape</p>
+            <button id='setshape'>Type<span>Circle</span></button>
+          <div>
+        </div>
+        </div>
       </div>
       <div class='bottom'>
         <button id='clear' class='icon-clear'>Clear</button>
@@ -85,10 +92,11 @@
       <section class='scrollable'>
         <h1>Brush Type</h1>
         <ol role='listbox'>
-          <li aria-selected='true'><label><span>Sketch</span></label></li>
-          <li><label><span>Fur</span></label></li>
-          <li><label><span>Pen</span></label></li>
-          <li><label><span>Line</span></label></li>
+          <li aria-selected='true' data-target='sketch'><label><span>Sketch</span></label></li>
+          <li data-target='fur'><label><span>Fur</span></label></li>
+          <li data-target='pencil'><label><span>Pencil</span></label></li>
+          <li data-target='line'><label><span>Line</span></label></li>
+          <li data-target='shape'><label><span>Shape</span></label></li>
           <!--<li><label><span>Eraser</span></label></li>-->
         </ol>
       </section>
@@ -123,6 +131,22 @@
       <menu>
         <button class='affirmative full'>Cancel</button>
       </menu>
+    </form>
+
+    <form role='dialog' data-type='value-selector' id='shape' class='hidden single'>
+      <section class='scrollable'>
+        <h1>Shape Type</h1>
+        <ol role='listbox'>
+          <li aria-selected='true' data-target='shape'><label><span>Circle</span></label></li>
+          <li data-target='shape'><label><span>Rectangle</span></label></li>
+          <li data-target='shape'><label><span>Square</span></label></li>
+          <li data-target='shape'><label><span>Triangle</span></label></li>
+          <li data-target='shape'><label><span>Custom</span></label></li>
+        </ol>
+        <menu>
+          <button class='affirmative full'>Cancel</button>
+        </menu>
+      </section>
     </form>
 
     <form role='dialog' data-type='value-selector' id='save' class='hidden confirm'>

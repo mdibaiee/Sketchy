@@ -3,7 +3,7 @@
 
 function sizeAndPos() {
 
-  var data = window.points.history[window.points.history.last].data || c.getImageData(0,0, $c.width(), $c.height());
+  var data = c.getImageData(0,0, $c.width(), $c.height());
   var w = $(window).width(),
       h = $(window).height() - 53;
   $c.attr('width', w * window.devicePixelRatio);
@@ -12,14 +12,16 @@ function sizeAndPos() {
     'width' : w,
     'height' : h
   });
-  c.clearRect(0,0, width(), height());
+  c.clear();
   c.putImageData(data, 0, 0);
 }
 
-function relative(x,y) {
+function relative(x,y, el) {
+  var el = el || $c,
+      offset = el.offset();
   return {
-    x : x*window.devicePixelRatio,
-    y : (y - 53) * window.devicePixelRatio
+    x : (x - offset.left) *window.devicePixelRatio,
+    y : (y - offset.top) * window.devicePixelRatio
   }
 }
 
@@ -31,8 +33,8 @@ function threshold(x1, y1, x2, y2, threshold) {
 
 function draw(x1, y1, x2, y2, opts, overlay) {
   opts = opts || {};
-  var c = window.c;
   if( overlay ) var c = window.o;
+  else var c = window.c;
   c.beginPath();
   if( settings.type == 'eraser' ) c.globalCompositeOperation = 'destination-out';
   else c.globalCompositeOperation = opts.composite || settings.composite;
@@ -47,6 +49,42 @@ function draw(x1, y1, x2, y2, opts, overlay) {
   if( opts.fill ) c.fill();
 }
 
+function shape(opts, overlay) {
+  if(overlay || opts.type == 'mark') var c = window.o;
+  else var c = window.c;
+  c.beginPath();
+  c.fillStyle = opts.color || settings.color;
+  var type = opts.type || settings.shape;
+  switch(type) {
+    case 'mark': {
+      c.fillStyle = 'red';
+      c.arc(opts.x, opts.y, 3, 0, 2*Math.PI);
+      break;
+    }
+    case 'circle': {
+      c.arc(opts.x, opts.y, opts.radius, 0, 2*Math.PI);
+      break;
+    }
+    case 'rectangle': {
+      c.rect(opts.x, opts.y, opts.width, opts.height);
+      break;
+    }
+    case 'square': {
+      c.rect(opts.x, opts.y, opts.width, opts.width);
+      break;
+    }
+    case 'triangle': {
+      c.fillStyle = opts
+      c.moveTo(opts.x1, opts.y1);
+      c.lineTo(opts.x2, opts.y2);
+      c.lineTo(opts.x3, opts.y3);
+      c.lineTo(opts.x1, opts.y1);
+      break;
+    }
+  }
+  c.fill();
+}
+
 function undo() {
   var history = window.points.history;
   if( history.last > 1 ) {
@@ -56,7 +94,7 @@ function undo() {
     window.points.history = history;
     window.points.history.last = history.last-1;
   } else {
-    c.clearRect(0,0, width(), height());
+    c.clear();
     window.points = [];
     window.points.history = history;
     window.points.history.last = 0;
@@ -106,19 +144,169 @@ function startPoint(x, y) {
         start : old.start || {x: x, y: y},
         type : settings.type
       }
+
+  // Line
   if( old.type !== 'line' && current.type == 'line' ) {
-    window.o.beginPath();
-    window.o.fillStyle = 'red';
-    window.o.arc(x,y, 3, 0, 2*Math.PI);
-    window.o.fill();
+    shape({
+      type: 'mark',
+      x: x,
+      y: y
+    })
   }
 
   if( old.type == 'line' && current.type == 'line' ) {
     if( points[points.indexOf(old)-1].type !== 'line' ) {
-      o.clearRect(old.x-3, old.y-3, 6, 6, true);
+      o.clear();
       draw(old.x, old.y, x, y);
     } else
       draw(old.x, old.y, x, y);
+  }
+
+  // Shapes
+
+  if( current.type == 'shape' ) {
+    switch(settings.shape) {
+      case 'circle': {
+        switch(settings.shapePoints.length) {
+          case 0: {
+            settings.shapePoints.push({
+              x: x,
+              y: y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: y
+            })
+            break;
+          } 
+          case 1: {
+            var radius = Math.abs(settings.shapePoints[0].x - x);
+            o.clear();
+            shape({
+              type: 'circle',
+              x: settings.shapePoints[0].x,
+              y: settings.shapePoints[0].y,
+              radius: radius
+            })
+            settings.shapePoints = [];
+            break;
+          }
+        }
+        break;
+      }
+      case 'rectangle': {
+        switch(settings.shapePoints.length) {
+          case 0: {
+            settings.shapePoints.push({
+              x: x,
+              y: y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: y
+            })
+            break;
+          }
+          case 1: {
+            settings.shapePoints.push({
+              x: x,
+              y: old.y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: old.y
+            })
+            break;
+          }
+          case 2: {
+            o.clear();
+            shape({
+              type: 'rectangle',
+              x: settings.shapePoints[0].x,
+              y: settings.shapePoints[0].y,
+              width: settings.shapePoints[1].x - settings.shapePoints[0].x,
+              height: y - settings.shapePoints[0].y
+            })
+            settings.shapePoints = [];
+            break;
+          }
+        }
+        break;
+      }
+      case 'square': {
+        switch(settings.shapePoints.length) {
+          case 0: {
+            settings.shapePoints.push({
+              x: x,
+              y: y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: y
+            })
+            break;
+          }
+          case 1: {
+            window.o.clear();
+            shape({
+              type: 'square',
+              x: old.x,
+              y: old.y,
+              width: x - old.x
+            }) 
+            settings.shapePoints = [];
+            break;
+          }
+        }
+        break;
+      }
+      case 'triangle': {
+        switch(settings.shapePoints.length) {
+          case 0: {
+            settings.shapePoints.push({
+              x: x,
+              y: y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: y
+            })
+            break;
+          }
+          case 1: {
+            settings.shapePoints.push({
+              x: x,
+              y: y
+            })
+            shape({
+              type: 'mark',
+              x: x,
+              y: y
+            })
+            break;
+          }
+          case 2: {
+            window.o.clear();
+            shape({
+              type: 'triangle',
+              x1: settings.shapePoints[0].x,
+              y1: settings.shapePoints[0].y,
+              x2: settings.shapePoints[1].x,
+              y2: settings.shapePoints[1].y,
+              x3: x,
+              y3: y
+            })
+            settings.shapePoints = [];
+            break;
+          }
+        }
+      }
+    }
   }
 
   var thresholds = window.mobile ? [10, 5] : [5, 2];

@@ -87,12 +87,13 @@ $(window).resize(sizeAndPos);
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
     $(this).attr('aria-selected', 'true');
     var key = $(this).parents('form').attr('id'),
-        value  = $(this).find('label span').html().toLowerCase();
+        value  = $(this).find('label span').html().toLowerCase(),
+        target = $(this).attr('data-target');
     window.settings[key] = value;
 
     $('button[id="set' + key + '"] span').html(value[0].toUpperCase() + value.substr(1));
     $('#menu div.options > div').addClass('hidden');
-    $('#menu div.options > .general, #menu div.options > .'+value).removeClass('hidden');
+    $('#menu div.options > .general, #menu div.options > .'+target).removeClass('hidden');
 
     $(this).parents('form').addClass('hidden');
   })
@@ -184,8 +185,10 @@ $(window).resize(sizeAndPos);
   // Bottom
 
   $('#clear').click(function() {
-    c.clearRect(0, 0, width(), height());
+    c.clear();
+    var h = window.points.history;
     window.points = [];
+    window.points.history = h;
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }

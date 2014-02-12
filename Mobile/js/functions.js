@@ -3,7 +3,7 @@
 
 function sizeAndPos() {
 
-  var data = window.points.history[window.points.history.last].data || c.getImageData(0,0, $c.width(), $c.height());
+  var data = c.getImageData(0,0, $c.width(), $c.height());
   var w = $(window).width(),
       h = $(window).height() - 53;
   $c.attr('width', w * window.devicePixelRatio);
@@ -16,10 +16,11 @@ function sizeAndPos() {
   c.putImageData(data, 0, 0);
 }
 
-function relative(x,y) {
+function relative(x,y, el) {
+  var el = el || $c[0];
   return {
-    x : x*window.devicePixelRatio,
-    y : (y - 53) * window.devicePixelRatio
+    x : x*window.devicePixelRatio - el.offset().left,
+    y : (y - 53) * window.devicePixelRatio - el.offset().top
   }
 }
 
@@ -46,6 +47,38 @@ function draw(x1, y1, x2, y2, opts, overlay) {
   if( !opts.noStroke ) c.stroke();
   if( opts.fill ) c.fill();
 }
+
+function shape(opts, overlay) {
+  if(overlay) var c = window.o;
+  else var c = window.c;
+  c.beginPath();
+  c.fillStyle = opts.color || settings.color;
+  switch(opts.type) {
+  
+    case 'circle': {
+      c.arc(opts.x, opts.y, opts.radius, 0, 2*Math.PI);
+      break;
+    }
+    case 'rectangle': {
+      c.rect(opts.x, opts.y, opts.width, opts.height);
+      break;
+    }
+    case 'square': {
+      c.rect(opts.x, opts.y, opts.width, opts.width);
+      break;
+    }
+    case 'triangle': {
+      c.fillStyle = opts
+      c.moveTo(opts.x1, opts.y1);
+      c.lineTo(opts.x2, opts.y2);
+      c.lineTo(opts.x3, opts.y3);
+      c.lineTo(opts.x1, opts.y1);
+    }
+  
+  }
+  c.fill();
+}
+
 
 function undo() {
   var history = window.points.history;
@@ -106,6 +139,7 @@ function startPoint(x, y) {
         start : old.start || {x: x, y: y},
         type : settings.type
       }
+  // Line
   if( old.type !== 'line' && current.type == 'line' ) {
     window.o.beginPath();
     window.o.fillStyle = 'red';
@@ -119,6 +153,12 @@ function startPoint(x, y) {
       draw(old.x, old.y, x, y);
     } else
       draw(old.x, old.y, x, y);
+  }
+
+  // Shapes
+
+  if( old.type !== 'shape' && current.type == 'shape' ) {
+    settings.shape.
   }
 
   var thresholds = window.mobile ? [10, 5] : [5, 2];

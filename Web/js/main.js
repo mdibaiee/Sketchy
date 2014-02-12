@@ -3,6 +3,9 @@
 $(document).ready(function() {
   window.c = $('canvas')[0].getContext('2d');
   window.o = $('canvas')[1].getContext('2d');
+  window.c.clear = window.o.clear = function() {
+    this.clearRect(0, 0, width(), height());
+  }
 
   window.settings = {
     lineWidth : 2,
@@ -12,7 +15,9 @@ $(document).ready(function() {
     lineJoin: 'round',
     furLength: 5,
     connectTelorance: 40,
-    composite: 'source-over'
+    composite: 'source-over',
+    shape: 'circle',
+    shapePoints: []
   };
   window.points = [];
   window.$c = $('canvas');
