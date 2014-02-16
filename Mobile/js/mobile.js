@@ -200,9 +200,9 @@ window.load = function() {
     }
     $(this).parents('form').addClass('hidden');
   })
-  $single.submit(function(e) {
+  $single.find('button').tap(function(e) {
     e.preventDefault();
-    $(this).addClass('hidden');
+    $(this).parents('form').addClass('hidden');
   })
 
   // Confirm
