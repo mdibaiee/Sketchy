@@ -23,7 +23,11 @@ Changelog
 
 **1.2**
 * Added an option to save sketches as a project, so they are editable[1]
-* Made Firefox Desktop / Firefox Android versions working ( was blocked by [1] )
+* Made Firefox Desktop versions working ( was blocked by [1] )
+* Added an option to change board's color ( Background )
+* Added Shapes (Circle, Rectangle, Square, Triangle)
+* Added Fill/Stroke option for Lines ( and shapes )
+* Made Line Join working ( was disabled in version 1.1 )
 
 **1.1**
 * Added "About"
