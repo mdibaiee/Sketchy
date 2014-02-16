@@ -11,16 +11,19 @@ $(window).resize(sizeAndPos);
   $('.load').click(function() {
     $('#load').removeClass('hidden');
     $('#load li').remove();
-    for( var i = 0, len = localStorage.length; i < len; i++ ) {
-      $('#load ol').append(
-        $('<li><label><span>' + localStorage.key(i) + '</span></label></li>')
-      );
-    }
-    if( localStorage.length < 1 ) {
+    var list = JSON.parse(localStorage.getItem('projects'));
+    if( !list || list.length < 1 ) {
       $('#load ol').append(
         $('<p>No sketch found.</p>')
       );
+      return;
     }
+    for( var i = 0, len = list.length; i < len; i++ ) {
+      $('#load ol').append(
+        $('<li><label><span>' + list[i].name + '</span></label></li>')
+      );
+    }
+    
     $confirm.find('li').off('click').click(function(e) {
       $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
       $(this).attr('aria-selected', 'true');

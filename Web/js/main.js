@@ -72,13 +72,28 @@ $(document).ready(function() {
     var data = $c[0].toDataURL();
 
     if( save.type == 'sketchy project' ) {
-    if( localStorage.getItem(save['file name']) ) {
+    var list = JSON.parse(localStorage.getItem('projects'));
+    if( list && list.some(function(a) { return a.name == save['file name'] }) ) {
       if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
-        localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points}));
+        list.push({
+          name: save['file name'],
+          data: data,
+          points: window.points
+        })
+        localStorage.setItem('projects', JSON.stringify(list));
       }
     }
     else
-      localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points})); 
+      list ? list.push({
+          name: save['file name'],
+          data: data,
+          points: window.points
+        }) : list = [{
+          name: save['file name'],
+          data: data,
+          points: window.points
+        }];
+      localStorage.setItem('projects', JSON.stringify(list)); 
     } else {
       window.open(data, '_blank').focus();
     }
@@ -87,7 +102,7 @@ $(document).ready(function() {
   }
 
   function load() {
-    var file = JSON.parse(localStorage.getItem(load.file));
+    var file = JSON.parse(localStorage.getItem('projects')).filter(function(a) { return a.name == load.file })[0];
     var img = document.createElement('img');
     img.src = file.data;
     img.onload = function() {

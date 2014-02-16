@@ -51,39 +51,52 @@ window.save = function() {
     }
   }
   var data = $c[0].toDataURL(); 
-  if( save.type == 'sketchy project' ) {
-    if( localStorage.getItem(save['file name']) ) {
+    if( save.type == 'sketchy project' ) {
+    var list = JSON.parse(localStorage.getItem('projects'));
+    if( list && list.some(function(a) { return a.name == save['file name'] }) ) {
       if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
-        localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points}));
+        list.push({
+          name: save['file name'],
+          data: data,
+          points: window.points
+        })
+        localStorage.setItem('projects', JSON.stringify(list));
       }
     }
     else
-      localStorage.setItem(save['file name'], JSON.stringify({data: data, points: window.points})); 
-  } else {
-    var file = dataToBlob($c[0].toDataURL());
-    var pics = navigator.getDeviceStorage('pictures');
-    var r = pics.addNamed(file, save['file name'] + '.png');
-    r.onsuccess = function() {
-      alert('Your sketch was successfuly saved to ' + this.result); 
+      list ? list.push({
+          name: save['file name'],
+          data: data,
+          points: window.points
+        }) : list = [{
+          name: save['file name'],
+          data: data,
+          points: window.points
+        }];
+      localStorage.setItem('projects', JSON.stringify(list)); 
+    } else {
+      window.open(data, '_blank').focus();
     }
-    r.onerror = function() {
-      alert('Something bad happened when we tried to save your file\n Possible problems: \n Duplicate name \n Permission problems')
-    }
+
+    c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
   }
-  c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
-}
+
 window.load = function() {
-  var file = JSON.parse(localStorage.getItem(load.file));
-  var img = document.createElement('img');
-  img.src = file.data;
-  console.log(file.data);
-  img.onload = function() {
-    c.clearRect(0, 0, width(), height());
-    c.drawImage(img, 0, 0);
-    window.points = file.points;
-    window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}, { data: c.getImageData(0, 0, width(), height()), points: file.points}];
+    var file = JSON.parse(localStorage.getItem('projects')).filter(function(a) { return a.name == load.file })[0];
+    var img = document.createElement('img');
+    img.src = file.data;
+    img.onload = function() {
+      c.clearRect(0, 0, width(), height());
+      c.drawImage(img, 0, 0);
+      window.points = file.points;
+      window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}, { data: c.getImageData(0, 0, width(), height()), points: file.points}];
+    }
   }
-}
+
+  if( localStorage.getItem('sawTips') != settings.version ) {
+    $('.tour').removeClass('hidden');
+    localStorage.setItem('sawTips', settings.version);
+  }
 
   $('.menu').tap(function() {
     $('#menu').toggleClass('pulled');
@@ -94,14 +107,16 @@ window.load = function() {
   $('.load').tap(function() {
     $('#load').removeClass('hidden');
     $('#load li').remove();
-    for( var i = 0, len = localStorage.length; i < len; i++ ) {
-      $('#load ol').append(
-        $('<li><label><span>' + localStorage.key(i) + '</span></label></li>')
-      );
-    }
-    if( localStorage.length < 1 ) {
+    var list = JSON.parse(localStorage.getItem('projects'));
+    if( !list || list.length < 1 ) {
       $('#load ol').append(
         $('<p>No Sketch found.</p>')
+      );
+      return;
+    }
+    for( var i = 0, len = list.length; i < len; i++ ) {
+      $('#load ol').append(
+        $('<li><label><span>' + list[i].name + '</span></label></li>')
       );
     }
     $confirm.find('li').off('tap').tap(function(e) {
