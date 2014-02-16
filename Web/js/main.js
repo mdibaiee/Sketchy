@@ -8,6 +8,8 @@ $(document).ready(function() {
   }
 
   window.settings = {
+    stroke: true,
+    fill: false,
     lineWidth : 2,
     color : 'black',
     type: 'sketch',
@@ -17,7 +19,10 @@ $(document).ready(function() {
     connectTelorance: 40,
     composite: 'source-over',
     shape: 'circle',
-    shapePoints: []
+    shapeStart: {},
+    comShape: {},
+    drawingLine: [],
+    version: 1.2
   };
   window.points = [];
   window.$c = $('canvas');
@@ -29,8 +34,12 @@ $(document).ready(function() {
 
   $('.color-picker').change(function() {
     var c = $(this).find('.color').val();
-    settings.color = c;
-    $('#setcolor span').html(c);
+    var caller = $(this).parent().attr('data-caller');
+    settings[caller] = c;
+    $('#set' + caller + ' span').html(c);
+    if( caller == 'bg' ) {
+      $c.first().css('background', c);
+    }
   })
   $('.color').val('#000000');
 
@@ -52,10 +61,9 @@ $(document).ready(function() {
         break;
       }
       case 'current color': {
-        c.fillStyle = settings.color;
+        c.fillStyle = settings.bg;
         c.globalCompositeOperation = 'destination-over';
         c.fillRect(0, 0, width(), height());
-        c.fillStyle = settings.color;
         c.globalCompositeOperation = settings.composite;
         break;
       }
@@ -92,14 +100,21 @@ $(document).ready(function() {
   window.load = load;
   window.save = save;
 
+
+  if( localStorage.getItem('sawTips') != settings.version ) {
+    $('.tour').removeClass('hidden');
+    localStorage.setItem('sawTips', settings.version);
+  }
+
+
   // TODO: Check for Update
 
-  var request = navigator.mozApps.getInstalled();
+  /*var request = navigator.mozApps.getInstalled();
   request.onsuccess = function() {
     var app = this.result[0];
     var latest = $.ajax({url:'manifest-web.webapp'});
     var selfApp = navigator.mozApps.getSelf();
-    /*selfApp.onsuccess = function() {
+    selfApp.onsuccess = function() {
       if(this.result) {
         latest.onload = function() {
           if( this.response ) {
@@ -119,7 +134,7 @@ $(document).ready(function() {
           }
         }
       }
-    }*/
+    }
     if( !app && confirm('Do you want to Install this app?') ) {
       var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
       ins.onsuccess = function() {
@@ -133,7 +148,7 @@ $(document).ready(function() {
   }
   request.onerror = function() {
     alert('An error occured while trying to check for updates');
-  }
+  }*/
 
   
 

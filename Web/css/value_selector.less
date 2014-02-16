@@ -144,7 +144,7 @@ form[role="dialog"][data-type="value-selector"] menu button::-moz-focus-inner {
   outline: none;
 }
 
-form[role="dialog"][data-type="value-selector"] menu button {
+form[role="dialog"][data-type="value-selector"] menu button, .button {
   width: calc((100% - 1rem) / 2);
   height: 3.8rem;
   margin: 0 0 1rem;
@@ -170,14 +170,14 @@ form[role="dialog"][data-type="value-selector"] menu button {
 
 /* Press (default & affirmative) */
 form[role="dialog"][data-type="value-selector"] menu button:active,
-form[role="dialog"][data-type="value-selector"] menu button.affirmative:active {
+form[role="dialog"][data-type="value-selector"] menu button.affirmative:active, .button:active {
   border-color: #008aaa;
   background: #008aaa;
   color: #333;
 }
 
 /* affirmative */
-form[role="dialog"][data-type="value-selector"] menu button.affirmative {
+form[role="dialog"][data-type="value-selector"] menu button.affirmative, .button.affirmative {
   background-image: url(value_selector/images/ui/affirmative.png);
   background-color: #00caf2;
   border-color: #008eab;
@@ -192,7 +192,7 @@ form[role="dialog"][data-type="value-selector"] menu button:first-child {
   margin: 0;
 }
 
-form[role="dialog"][data-type="value-selector"] menu button.full {
+form[role="dialog"][data-type="value-selector"] menu button.full, .button.full {
   width: 100%;
 }
 

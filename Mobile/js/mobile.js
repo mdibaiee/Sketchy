@@ -43,7 +43,7 @@ window.save = function() {
       break;
     }
     case 'current color': {
-      c.fillStyle = settings.color;
+      c.fillStyle = settings.bg;
       c.globalCompositeOperation = 'destination-over';
       c.fillRect(0, 0, width(), height());
       c.globalCompositeOperation = settings.composite;
@@ -109,7 +109,7 @@ window.load = function() {
       $(this).attr('aria-selected', 'true');
     })
   })
-  $('#pro').click(function() {
+  $('#pro').tap(function() {
     $('#save ol:nth-of-type(2) li').each(function() {
       if( $(this).find('span').html() !== 'Transparent' ) {
         $(this).addClass('hidden');
@@ -118,7 +118,7 @@ window.load = function() {
       else $(this).attr('aria-selected', 'true');
     })
   })
-  $('#exp').click(function() {
+  $('#exp').tap(function() {
     $('#save ol:nth-of-type(2) li').removeClass('hidden');
   })
   $c.last().on('touchstart', function(e) {
@@ -133,10 +133,40 @@ window.load = function() {
     window.active = false;
     if( settings.type == 'eraser' ) return;
 
+    if( settings.type == 'shape' ) {
+      var s = settings.comShape;
+      o.clear();
+      c.beginPath();
+      c.fillStyle = settings.color;
+      c.strokeStyle = settings.color;
+      c.lineWidth = settings.lineWidth / 20;
+      switch(s.type) {
+        case 'circle': {
+          c.arc(s.x, s.y, s.radius, 0, 2*Math.PI);
+          break;
+        }
+        case 'rectangle': {
+          c.rect(s.x, s.y, s.w, s.h)
+          break;
+        }        
+        case 'triangle': {
+          c.moveTo(s.start.x + s.dix, s.start.y);
+          c.lineTo(s.x, s.y);
+          c.lineTo(s.start.x, s.y);
+          c.lineTo(s.start.x + s.dix, s.start.y);
+          break;
+        }  
+      }
+      if( settings.fill ) c.fill();
+      if( settings.stroke ) c.stroke();
+    }
+
+    if( settings.type == 'line' ) return;
+
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }
-
+    
     window.points.history.push({
       data: c.getImageData(0, 0, width(), height()),
       points: window.points.slice(0)
@@ -147,6 +177,7 @@ window.load = function() {
       window.active = false;
       points[points.length-1].type = '';
       points[points.length-1].start = undefined;
+      finishLine();
     }
   })
   
@@ -155,23 +186,23 @@ window.load = function() {
   var $single = $('form[data-type="value-selector"].single');
 
   $single.find('li').tap(function(e) {
-    e.preventDefault();
     $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
     $(this).attr('aria-selected', 'true');
     var key = $(this).parents('form').attr('id'),
-        value  = $(this).find('label span').html().toLowerCase();
+        value  = $(this).find('label span').html().toLowerCase(),
+        target = $(this).attr('data-target');
     window.settings[key] = value;
 
     $('button[id="set' + key + '"] span').html(value[0].toUpperCase() + value.substr(1));
-    $('#menu div.options > div').addClass('hidden');
-    $('#menu div.options > .general, #menu div.options > .'+value).removeClass('hidden');
-
+    if( target ) {
+      $('#menu div.options > div').addClass('hidden');
+      $('#menu div.options > .general, #menu div.options > .'+target).removeClass('hidden');
+    }
     $(this).parents('form').addClass('hidden');
   })
-
-  $single.find('button').tap(function(e) {
+  $single.submit(function(e) {
     e.preventDefault();
-    $(this).parents('form').addClass('hidden');
+    $(this).addClass('hidden');
   })
 
   // Confirm
@@ -180,11 +211,11 @@ window.load = function() {
 
   $confirm.each(function() {
   
-    $(this).find('li').click(function(e) {
+    $(this).find('li').tap(function(e) {
       $(this).parent().find('li[aria-selected]').removeAttr('aria-selected');
       $(this).attr('aria-selected', 'true');
     })
-    $(this).find('button').last().click(function(e) {
+    $(this).find('button').last().tap(function(e) {
       e.preventDefault();
       var v = $(this).parents('form').attr('id');
       $(this).parents('form').find('h1').each(function(i) {
@@ -198,7 +229,7 @@ window.load = function() {
       $(this).parents('form').addClass('hidden');
       window[v]();
     })
-    $(this).find('button').first().click(function(e) {
+    $(this).find('button').first().tap(function(e) {
       e.preventDefault();
       $(this).parents('form').addClass('hidden');
     })
@@ -210,9 +241,11 @@ window.load = function() {
   var $btn = $('button[id^="set"]');
   $btn.each(function() {
     var target = /set(.*)/.exec($(this).attr('id'))[1];
-    if( target == 'color' ) {
+    // Exception for Color
+    if( target == 'color' || target == 'bg' ) {
       return $(this).tap(function() {
         $('.picker').removeClass('hidden');
+        $('.picker').attr('data-caller', target);
       })
     }
     $(this).tap(function(e) {
@@ -244,6 +277,21 @@ window.load = function() {
     }
   }).on('touchend', function() {
     $(this).removeAttr('data-moving');
+  })
+
+  $('.fill, .stroke').tap(function() {
+    var s = $('.'+$(this).attr('class')).find('span');
+    if( s.html() == 'Yes' ) {
+      s.html('No');
+      settings[$(this).attr('class')] = false;
+    } else {
+      s.html('Yes');
+      settings[$(this).attr('class')] = true;
+    }
+  })
+  
+  $('.close, .tour button').tap(function() {
+    $(this).parent().addClass('hidden');
   })
 
   // Color Picker

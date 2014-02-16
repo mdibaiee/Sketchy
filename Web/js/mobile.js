@@ -65,7 +65,30 @@ $c.last().on('touchstart', function(e) {
   if(window.points.history.last < window.points.history.length-1) {
     window.points.history.splice(window.points.history.last+1);
   }
-
+  if( settings.type == 'shape' ) {
+    var s = settings.comShape;
+    o.clear();
+    c.beginPath();
+    c.fillStyle = settings.color;
+    switch(s.type) {
+      case 'circle': {
+        c.arc(s.x, s.y, s.radius, 0, 2*Math.PI);
+        break;
+      }
+      case 'rectangle': {
+        c.rect(s.x, s.y, s.w, s.h)
+        break;
+      }        
+      case 'triangle': {
+        c.moveTo(s.start.x + s.dix, s.start.y);
+        c.lineTo(s.x, s.y);
+        c.lineTo(s.start.x, s.y);
+        c.lineTo(s.start.x + s.dix, s.start.y);
+        break;
+      }  
+    }
+    c.fill();
+  }
   window.points.history.push({
     data: c.getImageData(0, 0, width(), height()),
     points: window.points.slice(0)
@@ -177,7 +200,7 @@ $('div[role="slider"] button').on('touchstart', function() {
 
 // Color Picker
 
-$('.close').tap(function() {
+$('.close, .tour button').tap(function() {
   $(this).parent().addClass('hidden');
 })
 

@@ -12,15 +12,16 @@ function sizeAndPos() {
     'width' : w,
     'height' : h
   });
-  c.clearRect(0,0, width(), height());
+  c.clear();
   c.putImageData(data, 0, 0);
 }
 
 function relative(x,y, el) {
-  var el = el || $c[0];
+  var el = el || $c,
+      offset = el.offset();
   return {
-    x : x*window.devicePixelRatio - el.offset().left,
-    y : (y - 53) * window.devicePixelRatio - el.offset().top
+    x : (x - offset.left) *window.devicePixelRatio,
+    y : (y - offset.top) * window.devicePixelRatio
   }
 }
 
@@ -32,8 +33,8 @@ function threshold(x1, y1, x2, y2, threshold) {
 
 function draw(x1, y1, x2, y2, opts, overlay) {
   opts = opts || {};
-  var c = window.c;
   if( overlay ) var c = window.o;
+  else var c = window.c;
   c.beginPath();
   if( settings.type == 'eraser' ) c.globalCompositeOperation = 'destination-out';
   else c.globalCompositeOperation = opts.composite || settings.composite;
@@ -44,41 +45,76 @@ function draw(x1, y1, x2, y2, opts, overlay) {
   c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
   c.moveTo(x1, y1);
   c.lineTo(x2, y2);
-  if( !opts.noStroke ) c.stroke();
-  if( opts.fill ) c.fill();
+  if( !opts.noStroke || settings.noStroke ) c.stroke();
+  if( opts.fill || settings.fill ) c.fill();
 }
 
-function shape(opts, overlay) {
-  if(overlay) var c = window.o;
-  else var c = window.c;
+function mark(x, y) {
+  var o = window.o;
+  o.beginPath();
+  o.fillStyle = 'red';
+  o.arc(x,y, 3, 0, 2*Math.PI);
+  o.fill();
+}
+
+function erase(x1, y1, x2, y2, opts) {
+  var opts = opts || {};
+  var c = window.c;
   c.beginPath();
-  c.fillStyle = opts.color || settings.color;
-  switch(opts.type) {
-  
-    case 'circle': {
-      c.arc(opts.x, opts.y, opts.radius, 0, 2*Math.PI);
-      break;
-    }
-    case 'rectangle': {
-      c.rect(opts.x, opts.y, opts.width, opts.height);
-      break;
-    }
-    case 'square': {
-      c.rect(opts.x, opts.y, opts.width, opts.width);
-      break;
-    }
-    case 'triangle': {
-      c.fillStyle = opts
-      c.moveTo(opts.x1, opts.y1);
-      c.lineTo(opts.x2, opts.y2);
-      c.lineTo(opts.x3, opts.y3);
-      c.lineTo(opts.x1, opts.y1);
-    }
-  
-  }
-  c.fill();
+  c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  c.globalCompositeOperation = 'source-out';
+  c.moveTo(x1, y1);
+  c.lineTo(x2, y2);
+  window.points = window.points.filter(function(e, i) {
+    if(!threshold(e.x, e.y, x1, y1, c.lineWidth) &&
+       !threshold(e.x, e.y, x2, y2, c.lineWidth) ) return true;
+    return false;
+  })
 }
 
+function line(x, y, opts) {
+  var opts = opts || {};
+  var o = window.o;
+  o.beginPath();
+  o.lineCap = opts.lineCap || settings.lineCap;
+  o.lineJoin = opts.lineJoin || settings.lineJoin;
+  o.strokeStyle = opts.color || settings.color;
+  o.fillStyle = opts.color || settings.color;
+  o.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  var last = settings.drawingLine.length-1;
+  o.moveTo(settings.drawingLine[last].x, settings.drawingLine[last].y);
+  o.lineTo(x,y);
+  settings.drawingLine.push({
+    x: x,
+    y: y
+  })
+  o.stroke();
+  if( opts.fill || settings.fill ) o.fill();
+}
+
+function finishLine(opts) {
+  var opts = opts || {};
+  var c = window.c;
+  o.clear();
+  c.beginPath();
+  c.strokeStyle = opts.color || settings.color;
+  c.fillStyle = opts.color || settings.color;
+  c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  c.lineJoin = opts.lineJoin || settings.lineJoin;
+  c.lineCap = opts.lineJoin || settings.lineJoin;
+  c.moveTo(settings.drawingLine[0].x, settings.drawingLine[0].y);
+  for( var i = 1, len = settings.drawingLine.length; i < len; i++ ) {
+    c.lineTo(settings.drawingLine[i].x, settings.drawingLine[i].y);
+  }
+  if( settings.stroke ) c.stroke();
+  if( settings.fill ) c.fill();
+  settings.drawingLine = [];
+  window.points.history.push({
+    data: c.getImageData(0, 0, width(), height()),
+    points: window.points.slice(0)
+  })
+  window.points.history.last = window.points.history.length-1;
+}
 
 function undo() {
   var history = window.points.history;
@@ -89,7 +125,7 @@ function undo() {
     window.points.history = history;
     window.points.history.last = history.last-1;
   } else {
-    c.clearRect(0,0, width(), height());
+    c.clear();
     window.points = [];
     window.points.history = history;
     window.points.history.last = 0;
@@ -139,26 +175,27 @@ function startPoint(x, y) {
         start : old.start || {x: x, y: y},
         type : settings.type
       }
+
   // Line
   if( old.type !== 'line' && current.type == 'line' ) {
-    window.o.beginPath();
-    window.o.fillStyle = 'red';
-    window.o.arc(x,y, 3, 0, 2*Math.PI);
-    window.o.fill();
+    mark(x, y);
+    settings.drawingLine.push({
+      x: x,
+      y: y
+    })
   }
 
   if( old.type == 'line' && current.type == 'line' ) {
     if( points[points.indexOf(old)-1].type !== 'line' ) {
-      o.clearRect(old.x-3, old.y-3, 6, 6, true);
-      draw(old.x, old.y, x, y);
-    } else
-      draw(old.x, old.y, x, y);
+      o.clear();
+    }
+      line(x, y);
   }
 
   // Shapes
 
-  if( old.type !== 'shape' && current.type == 'shape' ) {
-    settings.shape.
+  if( current.type == 'shape' ) {
+    settings.shapeStart = current;
   }
 
   var thresholds = window.mobile ? [10, 5] : [5, 2];
@@ -166,6 +203,7 @@ function startPoint(x, y) {
     window.active = false;
     points[points.length-1].type = '';
     points[points.length-1].start = undefined;
+    finishLine();
     return;
   }
   points.push(current);
@@ -176,9 +214,9 @@ function drawPoint(x,y) {
 
   switch(capture.type) {
     case 'eraser': {
-      capture.type = 'pen';
+      erase(capture.x, capture.y, x, y);
     }
-    case 'pen': {
+    case 'pencil': {
       draw(capture.x, capture.y, x, y);
 
       var current = {
@@ -232,6 +270,74 @@ function drawPoint(x,y) {
           draw(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: w})
         }
       }
+      break;
+    }
+    case 'shape': {
+      o.clear();
+      o.beginPath();
+      o.fillStyle = settings.color;
+      o.strokeStyle = settings.color;
+      o.lineWidth = settings.lineWidth / 20;
+      var start = settings.shapeStart;
+      switch(settings.shape) {
+        case 'circle': {
+          var di = Math.abs(x - start.x);
+          o.arc(start.x, start.y, di, 0, 2*Math.PI);
+          settings.comShape = {
+            type: 'circle',
+            x: start.x,
+            y: start.y,
+            radius: di
+          }
+          break;
+        }
+        case 'rectangle': {
+          var w = x - start.x;
+          var h = y - start.y;
+          o.rect(start.x, start.y, w, h);
+          settings.comShape = {
+            type: 'rectangle',
+            x: start.x,
+            y: start.y,
+            w: w,
+            h: h
+          }
+          break;
+        }
+        case 'square': {
+          var w = x - start.x;
+          o.rect(start.x, start.y, w, w);
+          settings.comShape = {
+            type: 'rectangle',
+            x: start.x,
+            y: start.y,
+            w: w,
+            h: w
+          }
+          break;
+        }
+        case 'triangle': {
+          var dix = (x - start.x)/2;
+          var diy = (y - start.y)/2;
+          o.moveTo(start.x + dix, start.y);
+          o.lineTo(x, y);
+          o.lineTo(start.x, y);
+          o.lineTo(start.x + dix, start.y);
+          settings.comShape = {
+            type: 'triangle',
+            start: {
+              x: start.x,
+              y: start.y
+            },
+            x: x,
+            y: y,
+            dix: dix,
+            diy: diy
+          }
+        }
+      }
+      if( settings.fill ) o.fill();
+      if( settings.stroke ) o.stroke();
       break;
     }
   }

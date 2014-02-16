@@ -301,7 +301,8 @@ form[role="dialog"][data-type="value-selector"] menu button::-moz-focus-inner {
   border: none;
   outline: none;
 }
-form[role="dialog"][data-type="value-selector"] menu button {
+form[role="dialog"][data-type="value-selector"] menu button,
+.button {
   width: calc(49.5%);
   height: 3.8rem;
   margin: 0 0 1rem;
@@ -326,13 +327,15 @@ form[role="dialog"][data-type="value-selector"] menu button {
 }
 /* Press (default & affirmative) */
 form[role="dialog"][data-type="value-selector"] menu button:active,
-form[role="dialog"][data-type="value-selector"] menu button.affirmative:active {
+form[role="dialog"][data-type="value-selector"] menu button.affirmative:active,
+.button:active {
   border-color: #008aaa;
   background: #008aaa;
   color: #333;
 }
 /* affirmative */
-form[role="dialog"][data-type="value-selector"] menu button.affirmative {
+form[role="dialog"][data-type="value-selector"] menu button.affirmative,
+.button.affirmative {
   background-image: url(value_selector/images/ui/affirmative.png);
   background-color: #00caf2;
   border-color: #008eab;
@@ -344,7 +347,8 @@ form[role="dialog"][data-type="value-selector"] menu button,
 form[role="dialog"][data-type="value-selector"] menu button:first-child {
   margin: 0;
 }
-form[role="dialog"][data-type="value-selector"] menu button.full {
+form[role="dialog"][data-type="value-selector"] menu button.full,
+.button.full {
   width: 100%;
 }
 /* Right to left tweaks */
@@ -358,6 +362,8 @@ body {
   margin: 0;
   font-size: 10px;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 *::-moz-focus-inner {
   border: none;
@@ -366,8 +372,8 @@ body {
   outline: none;
 }
 .hidden {
-  display: none;
-  visibility: none;
+  display: none !important;
+  visibility: none !important;
 }
 div#container {
   position: absolute;
@@ -424,7 +430,8 @@ button {
   left: 97%;
 }
 .picker,
-.about {
+.about,
+.tour {
   font-family: 'MozTT-Light';
   width: 30rem;
   height: 24.6rem;
@@ -435,10 +442,12 @@ button {
   margin-left: -15rem;
 }
 .picker .color-picker,
-.about .color-picker {
+.about .color-picker,
+.tour .color-picker {
   margin: 0;
 }
-.about {
+.about,
+.tour {
   background: #262626;
   padding: 1rem 2rem;
   height: 23rem;
@@ -449,21 +458,34 @@ button {
   box-shadow: 0 0 0.3rem black;
 }
 .about a,
+.tour a,
 .about a:link,
+.tour a:link,
 .about a:visited,
-.about a:active {
+.tour a:visited,
+.about a:active,
+.tour a:active {
   color: white;
 }
-.about .close {
+.about .close,
+.tour .close {
   background: #262626;
   color: white;
   border: 1px solid gray;
 }
-.about p {
+.about p,
+.tour p {
   font-size: 11pt;
 }
-.about span {
+.about span,
+.tour span {
   font-size: 8pt;
+}
+.tour .button {
+  width: 30rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 1.8rem;
 }
 header {
   width: 100%;
@@ -505,8 +527,9 @@ header #title {
   left: -2rem;
 }
 #menu {
-  height: 100%;
   width: 15rem;
+  height: 100%;
+  display: block;
   background: #262626;
   position: absolute;
   left: -15rem;
@@ -516,7 +539,7 @@ header #title {
   font-size: 8pt;
   transition: left 0.2s ease-out;
   border-collapse: collapse;
-  overflow: hidden;
+  overflow-y: auto;
 }
 #menu.pulled {
   left: 0;
@@ -535,6 +558,9 @@ header #title {
   font-size: 8pt;
   padding: 0 0.6rem;
   cursor: pointer;
+}
+#menu p {
+  width: 65%;
 }
 #menu span {
   float: right;
@@ -588,13 +614,14 @@ header #title {
   background-image: url('imgs/redo.png');
 }
 #menu .options {
-  display: block;
+  display: table-row;
+  vertical-align: top;
   margin-top: 1rem;
 }
 #menu .bottom {
+  width: 100%;
   position: absolute;
   bottom: 5rem;
-  width: 100%;
 }
 #menu .bottom button[class^='icon'] {
   margin-left: 3.5rem;

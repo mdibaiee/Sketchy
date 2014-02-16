@@ -24,12 +24,13 @@
     </div>
 
     <div id='menu'>
-      <p class='icon-settings'>Settings</p>
       <div class='options'>
+        <p class='icon-settings'>Settings</p>
         <div class='general'>
           <button id='settype'>Brush Type<span>Sketch</span></button>
           <button id='setcolor'>Color<span>#000000</span></button>
-          <!--<button id='setlineJoin'>Line Join<span>Round</span></button>-->
+          <button id='setbg'>Background<span>#ffffff</span></button>
+          <button id='setlineJoin'>Line Join<span>Round</span></button>
           <button id='setlineCap'>Line Cap<span>Round</span></button>
           <p id='lineWidth'>Line Width <span>2</span></p>
            <div role="slider" class='lineWidth'>
@@ -69,6 +70,20 @@
               </div>
             </div>
           </div>
+          
+          <div class='line hidden'>
+            <p class='fill'>Fill<span>No</span></p>
+            <p class='stroke'>Stroke<span>Yes</span></p>
+          </div>
+
+          <div class='shape hidden'>
+            <p class='icon-settings'>Shape</p>
+            <button id='setshape'>Type<span>Circle</span></button>
+            <p class='fill'>Fill<span>No</span></p>
+            <p class='stroke'>Stroke<span>Yes</span></p>
+          <div>
+        </div>
+        </div>
       </div>
       <div class='bottom'>
         <button id='clear' class='icon-clear'>Clear</button>
@@ -78,15 +93,17 @@
         <button id='about'>About</button>
       </div>
     </div>
+    
 
     <form role='dialog' data-type='value-selector' id='type' class='hidden single'>
       <section class='scrollable'>
         <h1>Brush Type</h1>
         <ol role='listbox'>
-          <li aria-selected='true'><label><span>Sketch</span></label></li>
-          <li><label><span>Fur</span></label></li>
-          <li><label><span>Pen</span></label></li>
-          <li><label><span>Line</span></label></li>
+          <li aria-selected='true' data-target='sketch'><label><span>Sketch</span></label></li>
+          <li data-target='fur'><label><span>Fur</span></label></li>
+          <li data-target='pencil'><label><span>Pencil</span></label></li>
+          <li data-target='line'><label><span>Line</span></label></li>
+          <li data-target='shape'><label><span>Shape</span></label></li>
           <!--<li><label><span>Eraser</span></label></li>-->
         </ol>
       </section>
@@ -108,6 +125,22 @@
         <button class='affirmative full'>Cancel</button>
       </menu>
     </form>
+
+    <form role='dialog' data-type='value-selector' id='shape' class='hidden single'>
+      <section class='scrollable'>
+        <h1>Shape Type</h1>
+        <ol role='listbox'>
+          <li aria-selected='true' data-target='shape'><label><span>Circle</span></label></li>
+          <li data-target='shape'><label><span>Rectangle</span></label></li>
+          <li data-target='shape'><label><span>Square</span></label></li>
+          <li data-target='shape'><label><span>Triangle</span></label></li>
+        </ol>
+        <menu>
+          <button class='affirmative full'>Cancel</button>
+        </menu>
+      </section>
+    </form>
+
 
     <form role='dialog' data-type='value-selector' id='lineCap' class='hidden single'>
       <section class='scrollable'>
@@ -186,13 +219,23 @@
         <span>Sketchy was found by Mahdi Dibaiee. More info: <a href='http://about.me/mdibaiee'>About.me</a>
           <br><br>
           Contact: <br>
-          <a href='https://twitter.com/mdibaiee'>Twitter</a><br />
+          <a href='https://twitter.com/mdibaiee'>Twitter</a>&nbsp;&bullet;
           <a href='mailto:mdibaiee@aol.com'>Email</a>
           <br><br>
           <a href='http://mdibaiee.github.io/Sketchy/changelog.html'>Changelog</a>
         </span>
         <button class='close'>x</button>
     </div>
+
+    <div class='tour overlay hidden'>
+        <p>Tips</p>
+          <span>Hey! Let me give you some tips to help you along the way,</span><br /><br />
+          <span>To finish a line, hold your finger for 1 second on mobile, or double click on desktop.</span><br />
+          <span>Line join, fill / stroke are applied when the line is finished.</span><br /><br />
+          <span>If you found something missing, please get in touch with us.</span>
+        <button class='button'>Gotcha!</button>
+      <button class='close'>x</button>
+   </div>
 
     <!-- PRELOADER -->
     <div class='hidden'>

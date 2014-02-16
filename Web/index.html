@@ -24,14 +24,15 @@
       <canvas></canvas>
       <canvas></canvas>
     </div>
-
+    
     <div id='menu'>
-      <p class='icon-settings'>Settings</p>
       <div class='options'>
+        <p class='icon-settings'>Settings</p>
         <div class='general'>
           <button id='settype'>Brush Type<span>Sketch</span></button>
           <button id='setcolor'>Color<span>#000000</span></button>
-          <!--<button id='setlineJoin'>Line Join<span>Round</span></button>-->
+          <button id='setbg'>Background<span>#ffffff</span></button>
+          <button id='setlineJoin'>Line Join<span>Round</span></button>
           <button id='setlineCap'>Line Cap<span>Round</span></button>
           <p id='lineWidth'>Line Width <span>2</span></p>
            <div role="slider" class='lineWidth'>
@@ -72,9 +73,16 @@
             </div>
           </div>
           
+          <div class='line hidden'>
+            <p class='fill'>Fill<span>No</span></p>
+            <p class='stroke'>Stroke<span>Yes</span></p>
+          </div>
+
           <div class='shape hidden'>
             <p class='icon-settings'>Shape</p>
             <button id='setshape'>Type<span>Circle</span></button>
+            <p class='fill'>Fill<span>No</span></p>
+            <p class='stroke'>Stroke<span>Yes</span></p>
           <div>
         </div>
         </div>
@@ -141,7 +149,6 @@
           <li data-target='shape'><label><span>Rectangle</span></label></li>
           <li data-target='shape'><label><span>Square</span></label></li>
           <li data-target='shape'><label><span>Triangle</span></label></li>
-          <li data-target='shape'><label><span>Custom</span></label></li>
         </ol>
         <menu>
           <button class='affirmative full'>Cancel</button>
@@ -212,13 +219,23 @@
         <span>Sketchy was found by Mahdi Dibaiee. More info: <a href='http://about.me/mdibaiee'>About.me</a>
           <br><br>
           Contact: <br>
-          <a href='https://twitter.com/mdibaiee'>Twitter</a><br />
+          <a href='https://twitter.com/mdibaiee'>Twitter</a>&nbsp;&bullet;
           <a href='mailto:mdibaiee@aol.com'>Email</a>
           <br><br>
           <a href='http://mdibaiee.github.io/Sketchy/changelog.html'>Changelog</a>
         </span>
         <button class='close'>x</button>
     </div>
+    
+    <div class='tour overlay hidden'>
+        <p>Tips</p>
+          <span>Hey! Let me give you some tips to help you along the way,</span><br /><br />
+          <span>To finish a line, hold your finger for 1 second on mobile, or double click on desktop.</span><br />
+          <span>Line join, fill / stroke are applied when the line is finished.</span><br /><br />
+          <span>If you found something missing, please get in touch with us.</span>
+        <button class='button'>Gotcha!</button>
+      <button class='close'>x</button>
+   </div>
 
     <!-- PRELOADER -->
     <div class='hidden'>

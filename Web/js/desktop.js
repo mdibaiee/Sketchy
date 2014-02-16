@@ -60,7 +60,7 @@ $(window).resize(sizeAndPos);
     if (!window.active || settings.type == 'line') return;
     var xy = relative(e.pageX, e.pageY);
     drawPoint(xy.x, xy.y);
-  }).on('mouseup', function(e) {
+  }).on('mouseup mouseleave', function(e) {
     e.preventDefault();
     window.active = false;
   
@@ -69,6 +69,36 @@ $(window).resize(sizeAndPos);
     if(window.points.history.last < window.points.history.length-1) {
       window.points.history.splice(window.points.history.last+1);
     }
+
+    if( settings.type == 'shape' ) {
+      var s = settings.comShape;
+      o.clear();
+      c.beginPath();
+      c.fillStyle = settings.color;
+      c.strokeStyle = settings.color;
+      c.lineWidth = settings.lineWidth / 20;
+      switch(s.type) {
+        case 'circle': {
+          c.arc(s.x, s.y, s.radius, 0, 2*Math.PI);
+          break;
+        }
+        case 'rectangle': {
+          c.rect(s.x, s.y, s.w, s.h)
+          break;
+        }        
+        case 'triangle': {
+          c.moveTo(s.start.x + s.dix, s.start.y);
+          c.lineTo(s.x, s.y);
+          c.lineTo(s.start.x, s.y);
+          c.lineTo(s.start.x + s.dix, s.start.y);
+          break;
+        }  
+      }
+      if( settings.fill ) c.fill();
+      if( settings.stroke ) c.stroke();
+    }
+
+    if( settings.type == 'line' ) return;
 
     window.points.history.push({
       data: c.getImageData(0, 0, width(), height()),
@@ -92,9 +122,10 @@ $(window).resize(sizeAndPos);
     window.settings[key] = value;
 
     $('button[id="set' + key + '"] span').html(value[0].toUpperCase() + value.substr(1));
-    $('#menu div.options > div').addClass('hidden');
-    $('#menu div.options > .general, #menu div.options > .'+target).removeClass('hidden');
-
+    if( target ) {
+      $('#menu div.options > div').addClass('hidden');
+      $('#menu div.options > .general, #menu div.options > .'+target).removeClass('hidden');
+    }
     $(this).parents('form').addClass('hidden');
   })
   $single.submit(function(e) {
@@ -139,9 +170,10 @@ $(window).resize(sizeAndPos);
   $btn.each(function() {
     var target = /set(.*)/.exec($(this).attr('id'))[1];
     // Exception for Color
-    if( target == 'color' ) {
+    if( target == 'color' || target == 'bg' ) {
       return $(this).click(function() {
         $('.picker').removeClass('hidden');
+        $('.picker').attr('data-caller', target);
       })
     }
     $(this).click(function(e) {
@@ -175,10 +207,18 @@ $(window).resize(sizeAndPos);
     $(this).removeAttr('data-moving');
   })
 
-
-  // Color Picker
+  $('.fill, .stroke').click(function() {
+    var s = $('.'+$(this).attr('class')).find('span');
+    if( s.html() == 'Yes' ) {
+      s.html('No');
+      settings[$(this).attr('class')] = false;
+    } else {
+      s.html('Yes');
+      settings[$(this).attr('class')] = true;
+    }
+  })
   
-  $('.close').click(function() {
+  $('.close, .tour button').click(function() {
     $(this).parent().addClass('hidden');
   })
 
@@ -206,4 +246,5 @@ $(window).resize(sizeAndPos);
   $('#about').click(function() {
     $('.about').removeClass('hidden');
   })
+
 

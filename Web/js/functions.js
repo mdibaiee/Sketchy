@@ -45,44 +45,75 @@ function draw(x1, y1, x2, y2, opts, overlay) {
   c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
   c.moveTo(x1, y1);
   c.lineTo(x2, y2);
-  if( !opts.noStroke ) c.stroke();
-  if( opts.fill ) c.fill();
+  if( !opts.noStroke || settings.noStroke ) c.stroke();
+  if( opts.fill || settings.fill ) c.fill();
 }
 
-function shape(opts, overlay) {
-  if(overlay || opts.type == 'mark') var c = window.o;
-  else var c = window.c;
+function mark(x, y) {
+  var o = window.o;
+  o.beginPath();
+  o.fillStyle = 'red';
+  o.arc(x,y, 3, 0, 2*Math.PI);
+  o.fill();
+}
+
+function erase(x1, y1, x2, y2, opts) {
+  var opts = opts || {};
+  var c = window.c;
   c.beginPath();
+  c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  c.globalCompositeOperation = 'source-out';
+  c.moveTo(x1, y1);
+  c.lineTo(x2, y2);
+  window.points = window.points.filter(function(e, i) {
+    if(!threshold(e.x, e.y, x1, y1, c.lineWidth) &&
+       !threshold(e.x, e.y, x2, y2, c.lineWidth) ) return true;
+    return false;
+  })
+}
+
+function line(x, y, opts) {
+  var opts = opts || {};
+  var o = window.o;
+  o.beginPath();
+  o.lineCap = opts.lineCap || settings.lineCap;
+  o.lineJoin = opts.lineJoin || settings.lineJoin;
+  o.strokeStyle = opts.color || settings.color;
+  o.fillStyle = opts.color || settings.color;
+  o.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  var last = settings.drawingLine.length-1;
+  o.moveTo(settings.drawingLine[last].x, settings.drawingLine[last].y);
+  o.lineTo(x,y);
+  settings.drawingLine.push({
+    x: x,
+    y: y
+  })
+  o.stroke();
+  if( opts.fill || settings.fill ) o.fill();
+}
+
+function finishLine(opts) {
+  var opts = opts || {};
+  var c = window.c;
+  o.clear();
+  c.beginPath();
+  c.strokeStyle = opts.color || settings.color;
   c.fillStyle = opts.color || settings.color;
-  var type = opts.type || settings.shape;
-  switch(type) {
-    case 'mark': {
-      c.fillStyle = 'red';
-      c.arc(opts.x, opts.y, 3, 0, 2*Math.PI);
-      break;
-    }
-    case 'circle': {
-      c.arc(opts.x, opts.y, opts.radius, 0, 2*Math.PI);
-      break;
-    }
-    case 'rectangle': {
-      c.rect(opts.x, opts.y, opts.width, opts.height);
-      break;
-    }
-    case 'square': {
-      c.rect(opts.x, opts.y, opts.width, opts.width);
-      break;
-    }
-    case 'triangle': {
-      c.fillStyle = opts
-      c.moveTo(opts.x1, opts.y1);
-      c.lineTo(opts.x2, opts.y2);
-      c.lineTo(opts.x3, opts.y3);
-      c.lineTo(opts.x1, opts.y1);
-      break;
-    }
+  c.lineWidth = ( opts.lineWidth || settings.lineWidth ) / 10;
+  c.lineJoin = opts.lineJoin || settings.lineJoin;
+  c.lineCap = opts.lineJoin || settings.lineJoin;
+  c.moveTo(settings.drawingLine[0].x, settings.drawingLine[0].y);
+  for( var i = 1, len = settings.drawingLine.length; i < len; i++ ) {
+    c.lineTo(settings.drawingLine[i].x, settings.drawingLine[i].y);
   }
-  c.fill();
+  if( settings.stroke ) c.stroke();
+  if( settings.fill ) c.fill();
+  settings.drawingLine = [];
+  window.points.history.push({
+    data: c.getImageData(0, 0, width(), height()),
+    points: window.points.slice(0)
+  })
+  window.points.history.last = window.points.history.length-1;
 }
 
 function undo() {
@@ -147,8 +178,8 @@ function startPoint(x, y) {
 
   // Line
   if( old.type !== 'line' && current.type == 'line' ) {
-    shape({
-      type: 'mark',
+    mark(x, y);
+    settings.drawingLine.push({
       x: x,
       y: y
     })
@@ -157,156 +188,14 @@ function startPoint(x, y) {
   if( old.type == 'line' && current.type == 'line' ) {
     if( points[points.indexOf(old)-1].type !== 'line' ) {
       o.clear();
-      draw(old.x, old.y, x, y);
-    } else
-      draw(old.x, old.y, x, y);
+    }
+      line(x, y);
   }
 
   // Shapes
 
   if( current.type == 'shape' ) {
-    switch(settings.shape) {
-      case 'circle': {
-        switch(settings.shapePoints.length) {
-          case 0: {
-            settings.shapePoints.push({
-              x: x,
-              y: y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: y
-            })
-            break;
-          } 
-          case 1: {
-            var radius = Math.abs(settings.shapePoints[0].x - x);
-            o.clear();
-            shape({
-              type: 'circle',
-              x: settings.shapePoints[0].x,
-              y: settings.shapePoints[0].y,
-              radius: radius
-            })
-            settings.shapePoints = [];
-            break;
-          }
-        }
-        break;
-      }
-      case 'rectangle': {
-        switch(settings.shapePoints.length) {
-          case 0: {
-            settings.shapePoints.push({
-              x: x,
-              y: y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: y
-            })
-            break;
-          }
-          case 1: {
-            settings.shapePoints.push({
-              x: x,
-              y: old.y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: old.y
-            })
-            break;
-          }
-          case 2: {
-            o.clear();
-            shape({
-              type: 'rectangle',
-              x: settings.shapePoints[0].x,
-              y: settings.shapePoints[0].y,
-              width: settings.shapePoints[1].x - settings.shapePoints[0].x,
-              height: y - settings.shapePoints[0].y
-            })
-            settings.shapePoints = [];
-            break;
-          }
-        }
-        break;
-      }
-      case 'square': {
-        switch(settings.shapePoints.length) {
-          case 0: {
-            settings.shapePoints.push({
-              x: x,
-              y: y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: y
-            })
-            break;
-          }
-          case 1: {
-            window.o.clear();
-            shape({
-              type: 'square',
-              x: old.x,
-              y: old.y,
-              width: x - old.x
-            }) 
-            settings.shapePoints = [];
-            break;
-          }
-        }
-        break;
-      }
-      case 'triangle': {
-        switch(settings.shapePoints.length) {
-          case 0: {
-            settings.shapePoints.push({
-              x: x,
-              y: y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: y
-            })
-            break;
-          }
-          case 1: {
-            settings.shapePoints.push({
-              x: x,
-              y: y
-            })
-            shape({
-              type: 'mark',
-              x: x,
-              y: y
-            })
-            break;
-          }
-          case 2: {
-            window.o.clear();
-            shape({
-              type: 'triangle',
-              x1: settings.shapePoints[0].x,
-              y1: settings.shapePoints[0].y,
-              x2: settings.shapePoints[1].x,
-              y2: settings.shapePoints[1].y,
-              x3: x,
-              y3: y
-            })
-            settings.shapePoints = [];
-            break;
-          }
-        }
-      }
-    }
+    settings.shapeStart = current;
   }
 
   var thresholds = window.mobile ? [10, 5] : [5, 2];
@@ -314,6 +203,7 @@ function startPoint(x, y) {
     window.active = false;
     points[points.length-1].type = '';
     points[points.length-1].start = undefined;
+    finishLine();
     return;
   }
   points.push(current);
@@ -324,9 +214,9 @@ function drawPoint(x,y) {
 
   switch(capture.type) {
     case 'eraser': {
-      capture.type = 'pen';
+      erase(capture.x, capture.y, x, y);
     }
-    case 'pen': {
+    case 'pencil': {
       draw(capture.x, capture.y, x, y);
 
       var current = {
@@ -380,6 +270,74 @@ function drawPoint(x,y) {
           draw(points[i].x + x*l, points[i].y + y*l, current.x - x*l, current.y - y*l, {strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: w})
         }
       }
+      break;
+    }
+    case 'shape': {
+      o.clear();
+      o.beginPath();
+      o.fillStyle = settings.color;
+      o.strokeStyle = settings.color;
+      o.lineWidth = settings.lineWidth / 20;
+      var start = settings.shapeStart;
+      switch(settings.shape) {
+        case 'circle': {
+          var di = Math.abs(x - start.x);
+          o.arc(start.x, start.y, di, 0, 2*Math.PI);
+          settings.comShape = {
+            type: 'circle',
+            x: start.x,
+            y: start.y,
+            radius: di
+          }
+          break;
+        }
+        case 'rectangle': {
+          var w = x - start.x;
+          var h = y - start.y;
+          o.rect(start.x, start.y, w, h);
+          settings.comShape = {
+            type: 'rectangle',
+            x: start.x,
+            y: start.y,
+            w: w,
+            h: h
+          }
+          break;
+        }
+        case 'square': {
+          var w = x - start.x;
+          o.rect(start.x, start.y, w, w);
+          settings.comShape = {
+            type: 'rectangle',
+            x: start.x,
+            y: start.y,
+            w: w,
+            h: w
+          }
+          break;
+        }
+        case 'triangle': {
+          var dix = (x - start.x)/2;
+          var diy = (y - start.y)/2;
+          o.moveTo(start.x + dix, start.y);
+          o.lineTo(x, y);
+          o.lineTo(start.x, y);
+          o.lineTo(start.x + dix, start.y);
+          settings.comShape = {
+            type: 'triangle',
+            start: {
+              x: start.x,
+              y: start.y
+            },
+            x: x,
+            y: y,
+            dix: dix,
+            diy: diy
+          }
+        }
+      }
+      if( settings.fill ) o.fill();
+      if( settings.stroke ) o.stroke();
       break;
     }
   }
