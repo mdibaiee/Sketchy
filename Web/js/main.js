@@ -15,7 +15,7 @@ $(document).ready(function() {
     type: 'sketch',
     lineCap: 'round',
     lineJoin: 'round',
-    furLength: 5,
+    furLength: 50,
     connectTelorance: 40,
     composite: 'source-over',
     shape: 'circle',
