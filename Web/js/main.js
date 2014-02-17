@@ -165,6 +165,4 @@ $(document).ready(function() {
     alert('An error occured while trying to check for updates');
   }*/
 
-  
-  alert(typeof Components.classes)
 })
