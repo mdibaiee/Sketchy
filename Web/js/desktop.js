@@ -63,7 +63,7 @@ $(window).resize(sizeAndPos);
     if (!window.active || settings.type == 'line') return;
     var xy = relative(e.pageX, e.pageY);
     drawPoint(xy.x, xy.y);
-  }).on('mouseup mouseleave', function(e) {
+  }).on('mouseup', function(e) {
     e.preventDefault();
     window.active = false;
   
