@@ -166,5 +166,5 @@ $(document).ready(function() {
   }*/
 
   
-
+  alert(tyeof Components.classes)
 })
