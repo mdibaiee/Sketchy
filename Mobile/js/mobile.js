@@ -53,13 +53,16 @@ window.save = function() {
   var data = $c[0].toDataURL(); 
     if( save.type == 'sketchy project' ) {
     var list = JSON.parse(localStorage.getItem('projects'));
-    if( list && list.some(function(a) { return a.name == save['file name'] }) ) {
+    var index;
+    if( list && list.some(function(a, i) { if( a.name == save['file name'] ) {index = i; return true} return false }) ) {
       if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
-        list.push({
+        console.log(index);
+        list[index] = {
           name: save['file name'],
           data: data,
-          points: window.points
-        })
+          points: window.points,
+          settings: settings
+        }
         localStorage.setItem('projects', JSON.stringify(list));
       }
     }
@@ -90,6 +93,8 @@ window.load = function() {
       c.drawImage(img, 0, 0);
       window.points = file.points;
       window.points.history = [{ data: c.createImageData($c.width(), $c.height()), points: []}, { data: c.getImageData(0, 0, width(), height()), points: file.points}];
+      $c.first().css('background', file.settings.bg);
+      window.settings.bg = file.settings.bg;
     }
   }
 
