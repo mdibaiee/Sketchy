@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html manifest='cache.appcache'>
+<html>
 
   <head>
     <title>Sketchy</title>
     <meta charset='UTF-8'>
-    <meta name="viewport" content="width=device-width user-scalable=no initial-scale=1">
     <link rel='stylesheet' href='css/main.css'>
-    <script src='js/libs/mobilebrowsers.js'></script>
   </head>
   
   <body>
@@ -24,7 +22,7 @@
       <canvas></canvas>
       <canvas></canvas>
     </div>
-    
+
     <div id='menu'>
       <div class='options'>
         <p class='icon-settings'>Settings</p>
@@ -62,7 +60,6 @@
                 <button style='left: 40%'>handler</button>
               </div>
             </div>
-
             <p id='furLength'>Fur Length<span>50</span></p>
             <div role="slider" class='furLength'>
               <div>
@@ -97,6 +94,7 @@
         <button id='about'>About</button>
       </div>
     </div>
+    
 
     <form role='dialog' data-type='value-selector' id='type' class='hidden single'>
       <section class='scrollable'>
@@ -129,20 +127,6 @@
       </menu>
     </form>
 
-    <form role='dialog' data-type='value-selector' id='lineCap' class='hidden single'>
-      <section class='scrollable'>
-        <h1>Line Cap</h1>
-        <ol role='listbox'>
-          <li aria-selected='true'><label><span>Round</span></label></li>
-          <li><label><span>Square</span></label></li>
-          <li><label><span>Butt</span></label></li>
-        </ol>
-      </section>
-      <menu>
-        <button class='affirmative full'>Cancel</button>
-      </menu>
-    </form>
-
     <form role='dialog' data-type='value-selector' id='shape' class='hidden single'>
       <section class='scrollable'>
         <h1>Shape Type</h1>
@@ -156,6 +140,21 @@
           <button class='affirmative full'>Cancel</button>
         </menu>
       </section>
+    </form>
+
+
+    <form role='dialog' data-type='value-selector' id='lineCap' class='hidden single'>
+      <section class='scrollable'>
+        <h1>Line Cap</h1>
+        <ol role='listbox'>
+          <li aria-selected='true'><label><span>Round</span></label></li>
+          <li><label><span>Square</span></label></li>
+          <li><label><span>Butt</span></label></li>
+        </ol>
+      </section>
+      <menu>
+        <button class='affirmative full'>Cancel</button>
+      </menu>
     </form>
 
     <form role='dialog' data-type='value-selector' id='save' class='hidden confirm'>
@@ -228,7 +227,7 @@
         </span>
         <button class='close'>x</button>
     </div>
-    
+
     <div class='tour overlay hidden'>
         <p>Tips</p>
           <span>Hey! Let me give you some tips to help you along the way,</span><br /><br />
@@ -250,12 +249,14 @@
       <img src='css/value_selector/images/ui/affirmative.png'>
     </div>
 
-    <script src='js/libs/yepnope.min.js'></script>
     <script src='js/libs/zepto.min.js'></script>
+    <script src='js/libs/touch.js'></script>
+    <script src='js/libs/color-picker-touch.js'></script>
     <script src='js/functions.js'></script>
     <script src='js/shared.js'></script>
     <script src='js/main.js'></script>
     <script src='js/events.js'></script>
+    <script src='js/diff.js'></script>
 
   </body>
   

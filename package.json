@@ -1,0 +1,30 @@
+{
+  "name": "Sketchy",
+  "version": "1.2.0",
+  "description": "Free Firefox Sketch/Paint Tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mdibaiee/Sketchy/"
+  },
+  "devDependecies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "keywords": [
+    "Sketch",
+    "Firefox",
+    "Javascript"
+  ],
+  "author": "Mahdi Dibaiee",
+  "license": "GPL V2",
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  }
+}

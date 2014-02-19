@@ -1,14 +1,17 @@
 Sketchy
 =======
 
-Free Sketch / Paint application for Firefox OS with a lot of features.
+Free Sketch / Paint application for Firefox with a lot of features.
 
 Key features:
 * Different types of brushes 
 * Customizable brushes 
 * Colorpicker 
 * Unlimited Undo/Redo 
-* Save your sketch to sdcard 
+* Save your sketch to sdcard / PC
+* Save your sketch as a "Sketchy Project" and edit it later
+* Different shapes ( Circle, Rectangle, Square, Triangle )
+* Fill / Stroke
 
 New features are coming soon! Contact and tell us what feature you would like to see in next version ( you can make an issue ).
 
@@ -17,6 +20,18 @@ Found a bug? Make and issue and I'll fix it as soon as possible.
 Web version: https://mdibaiee.github.io/Sketchy/Web/
 
 Firefox Marketplace: https://marketplace.firefox.com/app/sketchy/
+
+Start
+=====
+
+To start working on:
+
+  git clone https://github.com/mdibaiee/Sketchy
+  cd Sketchy
+  npm install
+  grunt
+
+Sketchy will be built to "build" folder, you can run `grunt watch` to automatically re-run tasks when you modify files.
 
 Changelog
 =========

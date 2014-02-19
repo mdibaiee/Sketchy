@@ -1,0 +1,42 @@
+{
+  "name": "Sketchy",
+  "description": "Free Sketch/Paint app",
+  "version": "1.2",
+  "fullscreen": "true",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "default_locale": "en",
+  "icons": {
+    "16": "/img/icons/icon16.png",
+    "32": "/img/icons/icon32.png",
+    "48": "/img/icons/icon48.png",
+    "60": "/img/icons/icon60.png",
+    "64": "/img/icons/icon64.png",
+    "90": "/img/icons/icon90.png",
+    "120": "/img/icons/icon120.png",
+    "128": "/img/icons/icon128.png"
+  },
+  "developer": {
+    "name": "Mahdi Dibaiee",
+    "url": "https://twitter.com/mdibaiee"
+  },
+  "locales": {
+    "en": {
+      "name": "Sketchy",
+      "description": "Free Sketch/Paint app"
+    },
+    "fa": {
+      "name": "Sketchy",
+      "description": "برنامه‌ی رایگان طراحی/نقاشی"
+    }
+  },
+  "orientation": [
+    "portrait"
+  ],
+  "permissions": {
+    "device-storage:pictures": {
+      "description": "Required to save sketched pics",
+      "access": "readwrite"
+    }
+  }
+}
