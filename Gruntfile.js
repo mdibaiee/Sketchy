@@ -52,13 +52,13 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: 'Shared',
-            src: 'img',
+            src: 'img/**',
             dest: 'build/mobile'
           },
           {
             expand: true,
             cwd: 'Shared',
-            src: 'img',
+            src: 'img/**',
             dest: 'build/web'
           },
           {
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
         }
       },
       copy: {
-        files: 'Shared/**',
+        files: ['Shared/img/**', 'Mobile/index.html', 'Mobile/manifest.webapp', 'Web/index.html', 'Web/manifest.webapp', 'Web/cache.appcache'],
         tasks: 'copy',
         options: {
           spawn: false

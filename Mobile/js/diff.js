@@ -2,7 +2,6 @@ $(document).ready(function() {
 
   $('*').off('click mousemove mousedown mouseup mouseleave').on('click mousemove mousedown mouseup mouseleave', function(e) {
     e.preventDefault;
-    return false;
   })
 
   $('a[href^="http"]').tap(function(e) {
@@ -19,17 +18,17 @@ $(document).ready(function() {
 
   $('a[href^="mailto"]').tap(function(e) {
     e.preventDefault();
-    var mail = /mailto:(.*)/.exec($(this).attr('href'))[1];
     var mail = new MozActivity({
       name: 'new',
       data: {
         type: 'mail',
-        url: mail
+        url: $(this).attr('href')
       }
     })
   })
 
   window.save = function() {
+    var f = c.getImageData(0, 0, width(), height());
     switch(save.background) {
       case 'white': {
         c.fillStyle = 'white';
@@ -63,7 +62,7 @@ $(document).ready(function() {
           localStorage.setItem('projects', JSON.stringify(list));
         }
       }
-      else
+      else {
         list ? list.push({
             name: save['file name'],
             data: data,
@@ -74,13 +73,22 @@ $(document).ready(function() {
             points: window.points
           }];
         localStorage.setItem('projects', JSON.stringify(list)); 
-      } else {
-        window.open(data, '_blank').focus();
+      }         
+    } else {
+      var sd = navigator.getDeviceStorage('pictures');
+      var file = dataToBlob(data);
+      var req = sd.addNamed(file, save['file name'] + '.png');
+      req.onsuccess = function() {
+        alert('Your Sketch was saved successfuly: ' + this.result);
       }
-
-      c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
+      req.onerror = function(e) {
+        alert('Something bad happened trying to save your sketch ' + save['file name'] + '\n Possible reasons:\n Duplicate Name \n Not enough permission')
+        console.log(e);
+        console.log(this);
+      }
     }
-
+    c.putImageData(f, 0, 0);
+  }
   window.load = function() {
       var file = JSON.parse(localStorage.getItem('projects')).filter(function(a) { return a.name == load.file })[0];
       var img = document.createElement('img');

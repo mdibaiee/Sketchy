@@ -1,6 +1,5 @@
 "use strict";
 
-$(window).resize(sizeAndPos);
 $(document).ready(function() {
   $('.menu').on('click tap', function() {
     $('#menu').toggleClass('pulled');
@@ -10,7 +9,7 @@ $(document).ready(function() {
   })
   $('.load').on('click tap', function() {
     $('#load').removeClass('hidden');
-    $('#load li').remove();
+    $('#load li, #load p').remove();
     var list = JSON.parse(localStorage.getItem('projects'));
     if( !list || list.length < 1 ) {
       $('#load ol').append(
@@ -29,16 +28,10 @@ $(document).ready(function() {
       $(this).attr('aria-selected', 'true');
     })
     $('#pro').on('click tap', function() {
-      $('#save ol:nth-of-type(2) li').each(function() {
-        if( $(this).find('span').html() !== 'Transparent' ) {
-          $(this).addClass('hidden');
-          $(this).removeAttr('aria-selected');
-        }
-        else $(this).attr('aria-selected', 'true');
-      })
+      $('#save ol:nth-of-type(2)').addClass('hidden');
     })
     $('#exp').on('click tap', function() {
-      $('#save ol:nth-of-type(2) li').removeClass('hidden');
+      $('#save ol:nth-of-type(2)').removeClass('hidden');
     })
   })
   $('#pro').on('click tap', function() {
@@ -112,6 +105,14 @@ $(document).ready(function() {
       points: window.points.slice(0)
     })
     window.points.history.last = window.points.history.length-1;
+  }).on('longTap', function(e) {
+    if( settings.type == 'line' ) {
+      e.preventDefault();
+      window.active = false;
+      points[points.length-1].type = '';
+      points[points.length-1].start = undefined;
+      finishLine();
+    }
   })
   
   // Value Selector
@@ -181,6 +182,12 @@ $(document).ready(function() {
       return $(this).on('click tap', function() {
         $('.picker').removeClass('hidden');
         $('.picker').attr('data-caller', target);
+        setTimeout(function() {
+          $('body').on('click tap', 'canvas, #menu, header', function() {
+            $('.picker').addClass('hidden');
+            $('body').off('click tap');
+          })
+        }, 500);
       })
     }
     $(this).on('click tap', function(e) {
@@ -229,6 +236,7 @@ $(document).ready(function() {
   
   $('.close, .tour button').on('click tap', function() {
     $(this).parent().addClass('hidden');
+    $('body').off('click tap');
   })
 
   // Bottom

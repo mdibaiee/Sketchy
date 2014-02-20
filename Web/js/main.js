@@ -8,6 +8,7 @@ $(document).ready(function() {
     nope: ['js/libs/color-picker.js']
   })
 
+  $(window).resize(sizeAndPos);
 
   function save() {
     switch(save.background) {

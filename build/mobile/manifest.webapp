@@ -35,7 +35,7 @@
   ],
   "permissions": {
     "device-storage:pictures": {
-      "description": "Required to save sketched pics",
+      "description": "Required to save sketches",
       "access": "readwrite"
     }
   }
