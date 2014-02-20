@@ -384,6 +384,9 @@ canvas {
   top: 0;
   left: 0;
 }
+canvas:first-of-type {
+  background: white;
+}
 .separator {
   display: block;
   height: 4.8rem;

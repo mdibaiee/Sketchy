@@ -9,6 +9,7 @@ $(document).ready(function() {
     fill: false,
     lineWidth : 2,
     color : 'black',
+    bg: 'white',
     type: 'sketch',
     lineCap: 'round',
     lineJoin: 'round',

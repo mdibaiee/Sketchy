@@ -11,6 +11,7 @@ $(document).ready(function() {
   $(window).resize(sizeAndPos);
 
   function save() {
+    var f = c.getImageData(0, 0, width(), height());
     switch(save.background) {
       case 'white': {
         c.fillStyle = 'white';
@@ -61,7 +62,7 @@ $(document).ready(function() {
       window.open(data, '_blank').focus();
     }
 
-    c.putImageData(window.points.history[window.points.history.last].data, 0, 0);
+    c.putImageData(f, 0, 0);
   }
 
   function load() {
