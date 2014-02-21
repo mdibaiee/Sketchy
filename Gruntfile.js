@@ -100,14 +100,14 @@ module.exports = function(grunt) {
           return /build\/mobile\/(.*)/.exec(path)[1];
         },
         src: 'build/mobile/**',
-        dest: 'build/sketchy-mobile-<%= manifest.version %>.zip'
+        dest: 'sketchy-mobile-<%= manifest.version %>.zip'
       },
       web: {
         router: function(path) {
           return /build\/web\/(.*)/.exec(path)[1];
         },
         src: 'build/web/**',
-        dest: 'build/sketchy-web-<%= manifest.version %>.zip'
+        dest: 'sketchy-web-<%= manifest.version %>.zip'
       }
     },
 
