@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    manifest: grunt.file.readJSON('Mobile/manifest.webapp'),
     uglify: {
       main: {
         files: [
@@ -93,6 +94,23 @@ module.exports = function(grunt) {
       }
     },
 
+    zip: {
+      mobile: {
+        router: function(path) {
+          return /build\/mobile\/(.*)/.exec(path)[1];
+        },
+        src: 'build/mobile/**',
+        dest: 'build/sketchy-mobile-<%= manifest.version %>.zip'
+      },
+      web: {
+        router: function(path) {
+          return /build\/web\/(.*)/.exec(path)[1];
+        },
+        src: 'build/web/**',
+        dest: 'build/sketchy-web-<%= manifest.version %>.zip'
+      }
+    },
+
     watch: {
       js: {
         files: ['Shared/js/**', 'Mobile/js/**', 'Web/js/**'],
@@ -122,6 +140,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['uglify','copy', 'less'])
+  grunt.loadNpmTasks('grunt-zip');
+  grunt.registerTask('default', ['uglify','copy', 'less', 'zip'])
 
 }

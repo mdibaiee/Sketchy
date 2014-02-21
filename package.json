@@ -15,7 +15,8 @@
     "grunt-contrib-less": "~0.9.0",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-zip": "~0.12.0"
   },
   "keywords": [
     "Sketch",
@@ -24,7 +25,4 @@
   ],
   "author": "Mahdi Dibaiee",
   "license": "GPL V2",
-  "devDependencies": {
-    "grunt": "~0.4.2"
-  }
 }
