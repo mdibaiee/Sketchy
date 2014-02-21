@@ -14,6 +14,10 @@ $(document).ready(function() {
         url: href
       }
     })
+    return false;
+  }).click(function(e) {
+    e.preventDefault();
+    return false;
   })
 
   $('a[href^="mailto"]').tap(function(e) {
@@ -25,6 +29,10 @@ $(document).ready(function() {
         url: $(this).attr('href')
       }
     })
+    return false;
+  }).click(function(e) {
+    e.preventDefault();
+    return false;
   })
 
   window.save = function() {
@@ -51,7 +59,7 @@ $(document).ready(function() {
       var list = JSON.parse(localStorage.getItem('projects'));
       var index;
       if( list && list.some(function(a, i) { if( a.name == save['file name'] ) {index = i; return true} return false }) ) {
-        if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name']) + '?' ) {
+        if( confirm('A sketch with this name already exists. Do you want to overwrite ' + save['file name'] + '?') ) {
           console.log(index);
           list[index] = {
             name: save['file name'],
@@ -66,11 +74,13 @@ $(document).ready(function() {
         list ? list.push({
             name: save['file name'],
             data: data,
-            points: window.points
+            points: window.points,
+            settings: settings
           }) : list = [{
             name: save['file name'],
             data: data,
-            points: window.points
+            points: window.points,
+            settings: settings
           }];
         localStorage.setItem('projects', JSON.stringify(list)); 
       }         
@@ -83,8 +93,6 @@ $(document).ready(function() {
       }
       req.onerror = function(e) {
         alert('Something bad happened trying to save your sketch ' + save['file name'] + '\n Possible reasons:\n Duplicate Name \n Not enough permission')
-        console.log(e);
-        console.log(this);
       }
     }
     c.putImageData(f, 0, 0);

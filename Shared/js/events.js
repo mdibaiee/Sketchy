@@ -28,7 +28,13 @@ $(document).ready(function() {
       $(this).attr('aria-selected', 'true');
     })
     $('#pro').on('click tap', function() {
-      $('#save ol:nth-of-type(2)').addClass('hidden');
+      $('#save ol:nth-of-type(2) li').each(function() {
+        if( $(this).find('span').html() !== 'Current Color' ) {
+          $(this).addClass('hidden');
+          $(this).removeAttr('aria-selected');
+        }
+        else $(this).attr('aria-selected', 'true');
+      })
     })
     $('#exp').on('click tap', function() {
       $('#save ol:nth-of-type(2)').removeClass('hidden');
@@ -36,7 +42,7 @@ $(document).ready(function() {
   })
   $('#pro').on('click tap', function() {
     $('#save ol:nth-of-type(2) li').each(function() {
-      if( $(this).find('span').html() !== 'Transparent' ) {
+      if( $(this).find('span').html() !== 'Current Color' ) {
         $(this).addClass('hidden');
         $(this).removeAttr('aria-selected');
       }
