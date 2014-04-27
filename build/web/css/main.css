@@ -435,7 +435,8 @@ button {
 }
 .picker,
 .about,
-.tour {
+.tour,
+.vote {
   font-family: 'MozTT-Light';
   width: 30rem;
   height: 24.6rem;
@@ -447,11 +448,13 @@ button {
 }
 .picker .color-picker,
 .about .color-picker,
-.tour .color-picker {
+.tour .color-picker,
+.vote .color-picker {
   margin: 0;
 }
 .about,
-.tour {
+.tour,
+.vote {
   background: #262626;
   padding: 1rem 2rem;
   height: 23rem;
@@ -463,33 +466,44 @@ button {
 }
 .about a,
 .tour a,
+.vote a,
 .about a:link,
 .tour a:link,
+.vote a:link,
 .about a:visited,
 .tour a:visited,
+.vote a:visited,
 .about a:active,
-.tour a:active {
+.tour a:active,
+.vote a:active {
   color: white;
 }
 .about .close,
-.tour .close {
+.tour .close,
+.vote .close {
   background: #262626;
   color: white;
   border: 1px solid gray;
 }
 .about p,
-.tour p {
+.tour p,
+.vote p {
   font-size: 11pt;
 }
 .about span,
-.tour span {
+.tour span,
+.vote span {
   font-size: 8pt;
 }
-.tour .button {
+.tour .button,
+.vote .button {
   width: 30rem;
   position: absolute;
   bottom: 1rem;
   left: 1.8rem;
+}
+.vote {
+  height: 30rem;
 }
 header {
   width: 100%;

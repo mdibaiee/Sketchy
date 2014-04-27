@@ -240,7 +240,7 @@ $(document).ready(function() {
     }
   })
   
-  $('.close, .tour button').on('click tap', function() {
+  $('.close, .tour button, .vote button').on('click tap', function() {
     $(this).parent().addClass('hidden');
     $('body').off('click tap');
   })

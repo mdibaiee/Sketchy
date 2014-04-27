@@ -111,9 +111,9 @@ $(document).ready(function() {
       }
     }
 
-  if( localStorage.getItem('sawTips') != settings.version ) {
-    $('.tour').removeClass('hidden');
-    localStorage.setItem('sawTips', settings.version);
+  if( !localStorage.getItem('sawVote') ) {
+    $('.vote').removeClass('hidden');
+    localStorage.setItem('sawVote', true);
   }
 
 })

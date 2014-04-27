@@ -1,0 +1,20 @@
+<widget id='com.mdibaiee.sketchy' version='1.2.1'>
+
+  <name>Sketchy</name>
+  <description>
+    Free full-featured Sketch app
+  </description>
+  <author email='mdibaiee@aol.com' href='http://dibaiee.ir'>
+    Mahdi Dibaiee
+  </author>
+  <content src='index.html'/>
+  <access origin='*'/>
+
+  <preference name='KeepRunning' value='false'/>
+  <preference name='SplashScreen' value='sketchy'/>
+  <preference name='SetFullScreen' value='true'/>
+  <preference name='FullScreen' value='true'/>
+  <preference name='DisallowOverscroll' value='true'/>
+</widget>
+
+
