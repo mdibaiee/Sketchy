@@ -79,7 +79,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: 'Android',
-            src: ['index.html', 'config.xml', 'res'],
+            src: ['index.html', 'config.xml', 'res/**', 'icon.png'],
             dest: 'build/android'
           },
           {
