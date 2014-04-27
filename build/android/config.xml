@@ -1,4 +1,8 @@
-<widget id='com.mdibaiee.sketchy' version='1.2.1'>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id='com.mdibaiee.sketchy' version='1.2.1'>
 
   <name>Sketchy</name>
   <description>
@@ -9,6 +13,7 @@
   </author>
   <content src='index.html'/>
   <access origin='*'/>
+  <feature name="http://api.phonegap.com/1.0/device" />
 
   <preference name='KeepRunning' value='false'/>
   <preference name='SplashScreen' value='sketchy'/>
