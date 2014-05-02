@@ -1,0 +1,6 @@
+#!/bin/bash
+
+grunt;
+cp -R build/android/* ~/Documents/Workshop/Sketchy-Android/sketchy/www/
+cd ~/Documents/Workshop/Sketchy-Android/sketchy
+phonegap run android

@@ -61,7 +61,8 @@ $(document).ready(function() {
         }];
       localStorage.setItem('projects', JSON.stringify(list)); 
     } else {
-      window.open(data, '_blank').focus();
+      $('<a href="' + data + '" download="' + save['file name'] + '.png"></a>').click();
+      //window.open(data, '_blank').focus();
     }
 
     c.putImageData(f, 0, 0);

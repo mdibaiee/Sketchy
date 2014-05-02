@@ -13,7 +13,7 @@
   </author>
   <content src='index.html'/>
   <access origin='*'/>
-  <feature name="http://api.phonegap.com/1.0/device" />
+  <!--<feature name="http://api.phonegap.com/1.0/device" />-->
 
   <preference name='KeepRunning' value='false'/>
   <preference name='SplashScreen' value='sketchy'/>
@@ -21,7 +21,12 @@
   <preference name='FullScreen' value='true'/>
   <preference name='DisallowOverscroll' value='true'/>
 
-  <icon src='icon.png'/>
+  <feature name='File'>
+    <param name='android-package' value='org.apache.cordova.file' />
+  </feature>
+  <plugins>
+    <plugin name='File' value='org.apache.cordova.file' />
+  </plugins>
 </widget>
 
 

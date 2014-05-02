@@ -23,6 +23,13 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
+            cwd: 'Shared/js',
+            src: '**',
+            dest: 'build/android/js',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
             cwd: 'Mobile/js/',
             src: '*',
             dest: 'build/mobile/js',
@@ -79,7 +86,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: 'Android',
-            src: ['index.html', 'config.xml', 'res/**', 'icon.png'],
+            src: ['index.html', 'config.xml', 'AndroidManifest.xml', 'res/**', 'icon.png'],
             dest: 'build/android'
           },
           {
