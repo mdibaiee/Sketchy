@@ -84,47 +84,20 @@ $(document).ready(function() {
   window.load = load;
   window.save = save;
 
-  // TODO: Check for Update
+  // Unity WebApp
+  alert(typeof external.getUnityObject);
+  if(external.getUnityObject) {
+    window.Unity = external.getUnityObject(1.0);
 
-  /*var request = navigator.mozApps.getInstalled();
-  request.onsuccess = function() {
-    var app = this.result[0];
-    var latest = $.ajax({url:'manifest-web.webapp'});
-    var selfApp = navigator.mozApps.getSelf();
-    selfApp.onsuccess = function() {
-      if(this.result) {
-        latest.onload = function() {
-          if( this.response ) {
-            var lapp = JSON.parse(this.response);
-            alert(lapp.version);
-            alert(app.manifest.version);
-            if( lapp.version != app.manifest.version && 
-            confirm('A new version of this app is available, do you want to update?')) {
-              var ins = navigator.mozApps.install();
-              ins.onsuccess = function() {
-                alert('The app was installed successfuly');
-              }
-              ins.onerror = function() {
-                alert('There was an error installing app - ' + this.error.name)
-              }
-            }
-          }
-        }
-      }
+    function unityReady() {
+      console.log('Ready');
+      Unity.Notification.showNotification('Salam', 'Chetori!');
     }
-    if( !app && confirm('Do you want to Install this app?') ) {
-      var ins = navigator.mozApps.install('http://mdibaiee.github.io/Sketchy/Web/manifest-web.webapp');
-      ins.onsuccess = function() {
-        alert('The app was installed successfuly');
-      }
-      ins.onerror = function() {
-        alert('There was an error installing app')
-        console.log(this.error);
-      }
-    }
+    Unity.init({
+      name: 'Sketchy',
+      iconUrl: 'file:///home/mahdi/Documents/Workshop/Sketchy/build/web/img/icons/icon60.png',
+      onInit: unityReady
+    })
+
   }
-  request.onerror = function() {
-    alert('An error occured while trying to check for updates');
-  }*/
-
 })

@@ -1,6 +1,6 @@
 {
   "name": "Sketchy",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Free Firefox Sketch/Paint Tool",
   "main": "index.js",
   "scripts": {

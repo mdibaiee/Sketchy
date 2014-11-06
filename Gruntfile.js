@@ -23,23 +23,9 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
-            cwd: 'Shared/js',
-            src: '**',
-            dest: 'build/android/js',
-            filter: 'isFile'
-          },
-          {
-            expand: true,
             cwd: 'Mobile/js/',
             src: '*',
             dest: 'build/mobile/js',
-            filter: 'isFile'
-          },
-          {
-            expand: true,
-            cwd: 'Android/js/',
-            src: '*',
-            dest: 'build/android/js',
             filter: 'isFile'
           },
           {
@@ -56,7 +42,6 @@ module.exports = function(grunt) {
       production: {
         files: {
           'build/mobile/css/main.css': 'Shared/css/main.less',
-          'build/android/css/main.css': 'Shared/css/main.less',
           'build/web/css/main.css': 'Shared/css/main.less'
         },
         compress: true
@@ -85,12 +70,6 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
-            cwd: 'Android',
-            src: ['index.html', 'config.xml', 'AndroidManifest.xml', 'res/**', 'icon.png'],
-            dest: 'build/android'
-          },
-          {
-            expand: true,
             cwd: 'Web',
             src: ['index.html', 'manifest.webapp', 'cache.appcache'],
             dest: 'build/web'
@@ -104,12 +83,6 @@ module.exports = function(grunt) {
             cwd: 'Shared/css',
             src: '*/**',
             dest: 'build/mobile/css'
-          },
-          {
-            expand: true,
-            cwd: 'Shared/css',
-            src: '*/**',
-            dest: 'build/android/css'
           },
           {
             expand: true,

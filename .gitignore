@@ -1,4 +1,5 @@
 *.swp
 *.swo
 *~
+*.zip
 node_modules

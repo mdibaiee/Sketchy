@@ -111,9 +111,4 @@ $(document).ready(function() {
       }
     }
 
-  if( !localStorage.getItem('sawVote') ) {
-    $('.vote').removeClass('hidden');
-    localStorage.setItem('sawVote', true);
-  }
-
 })

@@ -1,7 +1,7 @@
 {
   "name": "Sketchy",
   "description": "Free full-featured Sketch app",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "fullscreen": "true",
   "type": "privileged",
   "launch_path": "/index.html",
@@ -37,6 +37,9 @@
     "device-storage:pictures": {
       "description": "Required to save sketches",
       "access": "readwrite"
+    },
+    "video-capture": {
+      "description": "Test"
     }
   }
 }
