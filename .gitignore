@@ -2,4 +2,7 @@
 *.swo
 *~
 *.zip
+Android
+deploy-android
+config.xml
 node_modules
