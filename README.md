@@ -15,9 +15,9 @@ Key features:
 
 New features are coming soon! Contact and tell us what feature you would like to see in next version ( you can make an issue ).
 
-Found a bug? Make and issue and I'll fix it as soon as possible.
+Found a bug? Make an issue and I'll fix it as soon as possible.
 
-Web version: https://mdibaiee.github.io/Sketchy/Web/
+Web version: https://mdibaiee.github.io/Sketchy/build/web/
 
 Firefox Marketplace: https://marketplace.firefox.com/app/sketchy/
 
@@ -32,6 +32,11 @@ To start working on:
   grunt
 
 Sketchy will be built to "build" folder, you can run `grunt watch` to automatically re-run tasks when you modify files.
+
+Known Issues
+============
+
+* Memory leak
 
 Changelog
 =========
